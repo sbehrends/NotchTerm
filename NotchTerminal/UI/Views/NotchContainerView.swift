@@ -16,6 +16,9 @@ private let openedBottomRadius: CGFloat = 24
 private let closedTopRadius: CGFloat    = 6
 private let closedBottomRadius: CGFloat = 14
 
+/// Space reserved for each activity icon (crab / spinner) beyond the hardware notch
+private let iconSlotW: CGFloat = 34
+
 struct NotchContainerView: View {
     @ObservedObject var viewModel: NotchViewModel
     @ObservedObject var sessionManager: TerminalSessionManager
@@ -30,7 +33,7 @@ struct NotchContainerView: View {
         if isOpened { return viewModel.openedSize.width }
         let base = viewModel.deviceNotchRect.width
         // Active: expand enough to give each icon 36pt of dedicated space
-        if activityMonitor.isActive { return base + 2 * iconSlotW }
+        if activityMonitor.isActive { return base + (2 * iconSlotW) }
         // Hover: subtle lateral expansion
         if viewModel.isHovering      { return base + 24 }
         return base
@@ -39,10 +42,8 @@ struct NotchContainerView: View {
         isOpened ? (viewModel.closedPillHeight + viewModel.openedSize.height)
                  : viewModel.deviceNotchRect.height
     }
-    /// Space reserved for each activity icon (crab / spinner) beyond the hardware notch
-    private let iconSlotW: CGFloat = 20
     /// Total frame given to each icon in the header row
-    private var sideW: CGFloat { iconSlotW + (viewModel.deviceNotchRect.height - 12) / 2 }
+    private var sideW: CGFloat { iconSlotW + (viewModel.deviceNotchRect.height - 8) / 2 }
 
     // MARK: - Shape radii
 
@@ -166,6 +167,7 @@ struct NotchContainerView: View {
                     .transition(.opacity.animation(.easeIn(duration: 0.1)))
             }
         }
+        .padding(.horizontal, isOpened ? 18 : 0)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
