@@ -27,21 +27,31 @@ struct NotchContainerView: View {
     // MARK: - Dimensions
 
     private var notchW: CGFloat {
-        isOpened ? viewModel.openedSize.width : viewModel.deviceNotchRect.width
+        if isOpened { return viewModel.openedSize.width }
+        let base = viewModel.deviceNotchRect.width
+        // Active: expand enough to give each icon 36pt of dedicated space
+        if activityMonitor.isActive { return base + 2 * iconSlotW }
+        // Hover: subtle lateral expansion
+        if viewModel.isHovering      { return base + 24 }
+        return base
     }
     private var notchH: CGFloat {
         isOpened ? (viewModel.closedPillHeight + viewModel.openedSize.height)
                  : viewModel.deviceNotchRect.height
     }
-    /// Width of sidebar icons (crab / spinner) scaled to the hardware notch height
-    private var sideW: CGFloat {
-        max(0, viewModel.deviceNotchRect.height - 12) + 10
-    }
+    /// Space reserved for each activity icon (crab / spinner) beyond the hardware notch
+    private let iconSlotW: CGFloat = 20
+    /// Total frame given to each icon in the header row
+    private var sideW: CGFloat { iconSlotW + (viewModel.deviceNotchRect.height - 12) / 2 }
 
     // MARK: - Shape radii
 
-    private var topRadius: CGFloat    { isOpened ? openedTopRadius    : closedTopRadius    }
-    private var bottomRadius: CGFloat { isOpened ? openedBottomRadius : closedBottomRadius }
+    private var topRadius: CGFloat { isOpened ? openedTopRadius : closedTopRadius }
+    private var bottomRadius: CGFloat {
+        if isOpened { return openedBottomRadius }
+        if activityMonitor.isActive { return 18 }
+        return viewModel.isHovering ? 17 : closedBottomRadius
+    }
 
     // MARK: - Body
 
@@ -107,7 +117,18 @@ struct NotchContainerView: View {
                     isOpened ? viewModel.openAnimation : viewModel.closeAnimation,
                     value: viewModel.status
                 )
-                .animation(.smooth, value: activityMonitor.isActive)
+                // Hover expansion: fast ease-out in, slightly slower ease-in out
+                .animation(
+                    viewModel.isHovering
+                        ? .easeOut(duration: 0.18)
+                        : .easeIn(duration: 0.22),
+                    value: viewModel.isHovering
+                )
+                // Activity expansion: spring so it feels alive
+                .animation(
+                    .spring(response: 0.38, dampingFraction: 0.72),
+                    value: activityMonitor.isActive
+                )
             }
             .preferredColorScheme(.dark)
             .onAppear  { activityMonitor.startMonitoring()  }
@@ -131,7 +152,7 @@ struct NotchContainerView: View {
         ZStack {
             if activityMonitor.isActive {
                 HStack(spacing: 0) {
-                    ClaudeCrabIcon(size: 14, animateLegs: true)
+                    ClaudeCrabIcon(size: 16, animateLegs: true)
                         .frame(width: sideW)
                     Spacer(minLength: 0)
                     ProcessingSpinner()
