@@ -1,0 +1,39 @@
+name: NotchTerminal
+options:
+  bundleIdPrefix: com.sergiobehrends
+  deploymentTarget:
+    macOS: "15.0"
+  xcodeVersion: "16"
+  groupSortPosition: top
+
+packages:
+  SwiftTerm:
+    url: https://github.com/migueldeicaza/SwiftTerm
+    from: 1.0.0
+
+targets:
+  NotchTerminal:
+    type: application
+    platform: macOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: NotchTerminal
+    resources:
+      - path: NotchTerminal/Resources/notch-terminal-hook.py
+    dependencies:
+      - package: SwiftTerm
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sergiobehrends.NotchTerminal
+        SWIFT_VERSION: "6.0"
+        ENABLE_APP_SANDBOX: "NO"
+        ENABLE_HARDENED_RUNTIME: YES
+        INFOPLIST_KEY_LSUIElement: YES
+        INFOPLIST_KEY_NSPrincipalClass: NSApplication
+        MACOSX_DEPLOYMENT_TARGET: "15.0"
+        CODE_SIGN_ENTITLEMENTS: NotchTerminal/NotchTerminal.entitlements
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+        GENERATE_INFOPLIST_FILE: YES
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
