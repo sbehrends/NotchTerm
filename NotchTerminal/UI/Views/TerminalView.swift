@@ -28,8 +28,11 @@ struct TerminalEmulatorView: NSViewRepresentable {
         // so the shell sources its profile and starts in the home directory.
         var env = ProcessInfo.processInfo.environment
         env["HOME"] = home
+        env["PWD"] = home
+        env["TERM"] = "xterm-256color"
+        env["COLORTERM"] = "truecolor"
         let shellName = URL(fileURLWithPath: shell).lastPathComponent
-        tv.startProcess(executable: shell, args: [], environment: env.map { "\($0.key)=\($0.value)" }, execName: "-\(shellName)")
+        tv.startProcess(executable: shell, args: [], environment: env.map { "\($0.key)=\($0.value)" }, execName: "-\(shellName)", currentDirectory: home)
         tv.processDelegate = context.coordinator
 
         // Store strong reference so PTY survives tab switches
