@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PostHog
 
 struct HookInstaller {
 
@@ -25,6 +26,9 @@ struct HookInstaller {
         }
 
         updateSettings(at: settings)
+
+        // PostHog: Track hook install
+        PostHogSDK.shared.capture("hook_installed", properties: ["provider": "claude"])
     }
 
     private static func updateSettings(at settingsURL: URL) {

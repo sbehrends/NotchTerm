@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import PostHog
 import SwiftUI
 
 @MainActor
@@ -29,6 +30,8 @@ final class TerminalSessionManager: ObservableObject {
         withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
             activeSessionId = session.id
         }
+        // PostHog: Track new tab
+        PostHogSDK.shared.capture("tab_added", properties: ["tab_count": sessions.count])
     }
 
     func removeSession(_ session: TerminalSession) {
@@ -46,14 +49,23 @@ final class TerminalSessionManager: ObservableObject {
             sessions.removeAll { $0.id == session.id }
             activeSessionId = newActive
         }
+        // PostHog: Track tab removal (sessions.count already reflects the removal)
+        PostHogSDK.shared.capture("tab_removed", properties: ["tab_count": sessions.count])
     }
 
     func activate(_ session: TerminalSession) {
+        guard session.id != activeSessionId else { return }
         activeSessionId = session.id
+        // PostHog: Track tab switch
+        PostHogSDK.shared.capture("tab_switched", properties: ["tab_count": sessions.count])
     }
 
     func activateTab(at index: Int) {
         guard index < sessions.count else { return }
-        activeSessionId = sessions[index].id
+        let session = sessions[index]
+        guard session.id != activeSessionId else { return }
+        activeSessionId = session.id
+        // PostHog: Track tab switch via keyboard shortcut
+        PostHogSDK.shared.capture("tab_switched", properties: ["tab_count": sessions.count])
     }
 }

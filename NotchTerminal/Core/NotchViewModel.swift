@@ -7,6 +7,7 @@
 
 import AppKit
 import Combine
+import PostHog
 import SwiftUI
 
 enum NotchStatus: Equatable {
@@ -167,6 +168,14 @@ class NotchViewModel: ObservableObject {
         withAnimation(openAnimation) {
             status = .opened
         }
+        // PostHog: Track notch open
+        let reasonString: String
+        switch reason {
+        case .click: reasonString = "click"
+        case .hover: reasonString = "hover"
+        case .boot:  reasonString = "boot"
+        }
+        PostHogSDK.shared.capture("notch_opened", properties: ["open_reason": reasonString])
     }
 
     func notchClose() {
@@ -174,6 +183,8 @@ class NotchViewModel: ObservableObject {
             status = .closed
             isHovering = false
         }
+        // PostHog: Track notch close
+        PostHogSDK.shared.capture("notch_closed")
     }
 
     func performBootAnimation() {

@@ -30,6 +30,7 @@
 		BF84946B5D59C9DF665EACAB /* TerminalTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FFB807B2C76FDD51D4BC54 /* TerminalTabsView.swift */; };
 		CF14091F4711136847341685 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3965A1EDF020FFDADFD5281 /* WindowManager.swift */; };
 		D935372223B4DC3D50FFE423 /* NotchWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA4495AE0479F3DB91ED6B4 /* NotchWindowController.swift */; };
+		A1B2C3D4E5F611223344AABB /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = B1C2D3E4F5A611223344BBCC /* PostHog */; };
 		DF13B648FE4D5B238A712B04 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 571B6D7864A913D8595CAFFC /* SwiftTerm */; };
 		EE3D89D452B69B10E9EDDA01 /* ClaudeActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3062DCF03EF3187FD69ED203 /* ClaudeActivityMonitor.swift */; };
 		FFA0007A186AFBF12C0C6A38 /* NotchGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DA097472A55A023DE9234B /* NotchGeometry.swift */; };
@@ -70,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B2C3D4E5F611223344AABB /* PostHog in Frameworks */,
 				DF13B648FE4D5B238A712B04 /* SwiftTerm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -239,6 +241,7 @@
 			);
 			name = NotchTerminal;
 			packageProductDependencies = (
+				B1C2D3E4F5A611223344BBCC /* PostHog */,
 				571B6D7864A913D8595CAFFC /* SwiftTerm */,
 			);
 			productName = NotchTerminal;
@@ -269,6 +272,7 @@
 			mainGroup = 5DEB5C7BAE8A7A7DBC9713F0;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				C1D2E3F4A5B611223344CCDD /* XCRemoteSwiftPackageReference "posthog-ios" */,
 				4E46D70CC07FA9FE1806DDA6 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -526,6 +530,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C1D2E3F4A5B611223344CCDD /* XCRemoteSwiftPackageReference "posthog-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PostHog/posthog-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.48.3;
+			};
+		};
 		4E46D70CC07FA9FE1806DDA6 /* XCRemoteSwiftPackageReference "SwiftTerm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/migueldeicaza/SwiftTerm";
@@ -537,6 +549,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B1C2D3E4F5A611223344BBCC /* PostHog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D2E3F4A5B611223344CCDD /* XCRemoteSwiftPackageReference "posthog-ios" */;
+			productName = PostHog;
+		};
 		571B6D7864A913D8595CAFFC /* SwiftTerm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4E46D70CC07FA9FE1806DDA6 /* XCRemoteSwiftPackageReference "SwiftTerm" */;

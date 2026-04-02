@@ -4,6 +4,7 @@
 //
 
 import AppKit
+import PostHog
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var windowManager: WindowManager?
@@ -20,6 +21,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         screenObserver = ScreenObserver { [weak self] in
             self?.windowManager?.setupNotchWindow()
         }
+
+        // PostHog: Track app launch
+        PostHogSDK.shared.capture("app_launched")
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
