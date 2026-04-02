@@ -43,7 +43,12 @@ struct TerminalEmulatorView: NSViewRepresentable {
         return tv
     }
 
-    func updateNSView(_ nsView: LocalProcessTerminalView, context: Context) {}
+    func updateNSView(_ nsView: LocalProcessTerminalView, context: Context) {
+        // Defensive redraw: marks the backing layer dirty so any stale pixels
+        // from animation are flushed. The real fix for blank-on-reopen is in
+        // NotchContainerView — keeping TerminalTabsView always in the hierarchy.
+        nsView.needsDisplay = true
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(session: session)

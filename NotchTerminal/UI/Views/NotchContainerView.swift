@@ -69,30 +69,27 @@ struct NotchContainerView: View {
                                              : viewModel.deviceNotchRect.height
                         )
 
-                    // ── Terminal panel – only when opened ────────────────────
-                    // The NotchShape's straight sides run at x = openedTopRadius (19pt)
-                    // from each edge, so the usable content width is openedW - 2*19.
-                    // We size the terminal to that width and offset it with padding so
-                    // the terminal fills exactly the visible area without being clipped.
-                    if isOpened {
-                        let contentW = viewModel.openedSize.width - 2 * openedTopRadius
-                        TerminalTabsView(
-                            sessionManager: sessionManager,
-                            panelWidth: contentW,
-                            onClose: { viewModel.notchClose() }
-                        )
-                        .frame(
-                            width: contentW,
-                            height: viewModel.openedSize.height
-                        )
-                        .padding(.horizontal, openedTopRadius)
-                        .opacity(showContent ? 1 : 0)
-                        .animation(viewModel.openAnimation, value: showContent)
-                        .transition(.asymmetric(
-                            insertion: .identity,
-                            removal: .opacity.animation(.easeOut(duration: 0.12))
-                        ))
-                    }
+                    // ── Terminal panel – always in hierarchy, height=0 when closed ──
+                    // Keeping TerminalTabsView always present prevents SwiftUI from
+                    // destroying and recreating the NSViewRepresentable on each
+                    // open/close cycle. If removed, SwiftTerm's dirtyLines tracking
+                    // empties out while the view is gone, so draw() finds nothing to
+                    // repaint on re-insertion — producing a blank screen.
+                    // SwiftTerm guards against zero rows internally, so height:0 is safe.
+                    let contentW = viewModel.openedSize.width - 2 * openedTopRadius
+                    TerminalTabsView(
+                        sessionManager: sessionManager,
+                        panelWidth: contentW,
+                        onClose: { viewModel.notchClose() }
+                    )
+                    .frame(
+                        width: contentW,
+                        height: isOpened ? viewModel.openedSize.height : 0
+                    )
+                    .padding(.horizontal, openedTopRadius)
+                    .opacity(showContent ? 1 : 0)
+                    .animation(viewModel.openAnimation, value: showContent)
+                    .clipped()
                 }
                 // Clip the whole shape — covers both header and terminal panel
                 .background(Color.black)
