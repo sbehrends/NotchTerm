@@ -7,6 +7,19 @@
 
 import Foundation
 
+// MARK: - Activity state
+
+enum ClaudeActivity: Equatable {
+    case idle
+    case processing         // generating a response, post-tool, compacting
+    case runningTool        // PreToolUse — tool is executing
+    case waitingForApproval // PermissionRequest — needs user input
+
+    var isActive: Bool { self != .idle }
+}
+
+// MARK: - Hook event
+
 struct HookEvent: Codable, Sendable {
     let sessionId: String
     let cwd: String
@@ -22,13 +35,12 @@ struct HookEvent: Codable, Sendable {
         case notificationType = "notification_type"
     }
 
-    /// Whether Claude is actively doing work (show crab/spinner)
-    var isProcessing: Bool {
+    var activity: ClaudeActivity {
         switch status {
-        case "processing", "running_tool", "compacting", "waiting_for_approval":
-            return true
-        default:
-            return false
+        case "processing", "compacting": return .processing
+        case "running_tool":             return .runningTool
+        case "waiting_for_approval":     return .waitingForApproval
+        default:                         return .idle
         }
     }
 }

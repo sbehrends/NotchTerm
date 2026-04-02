@@ -93,6 +93,28 @@ struct ClaudeCrabIcon: View {
     }
 }
 
+// MARK: - Approval Pulse
+
+/// Shown in the right icon slot when Claude is waiting for user permission.
+struct ApprovalPulse: View {
+    @State private var pulsing = false
+
+    private let amber = Color(red: 0.95, green: 0.75, blue: 0.20)
+
+    var body: some View {
+        Image(systemName: "exclamationmark.circle.fill")
+            .font(.system(size: 11, weight: .bold))
+            .foregroundColor(amber)
+            .scaleEffect(pulsing ? 1.25 : 1.0)
+            .opacity(pulsing ? 0.6 : 1.0)
+            .animation(
+                .easeInOut(duration: 0.7).repeatForever(autoreverses: true),
+                value: pulsing
+            )
+            .onAppear { pulsing = true }
+    }
+}
+
 // MARK: - Processing Spinner
 
 struct ProcessingSpinner: View {

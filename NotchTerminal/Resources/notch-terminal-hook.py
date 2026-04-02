@@ -72,7 +72,6 @@ def main():
         # Let Claude Code handle permissions natively; just notify
         state["status"] = "waiting_for_approval"
         state["tool"] = data.get("tool_name")
-        sys.exit(0)
 
     else:
         state["status"] = "unknown"

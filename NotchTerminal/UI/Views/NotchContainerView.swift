@@ -33,9 +33,9 @@ struct NotchContainerView: View {
         if isOpened { return viewModel.openedSize.width }
         let base = viewModel.deviceNotchRect.width
         // Active: expand enough to give each icon 36pt of dedicated space
-        if activityMonitor.isActive { return base + (2 * iconSlotW) }
+        if activityMonitor.activity.isActive { return base + (2 * iconSlotW) }
         // Hover: subtle lateral expansion
-        if viewModel.isHovering      { return base + 24 }
+        if viewModel.isHovering              { return base + 24 }
         return base
     }
     private var notchH: CGFloat {
@@ -50,7 +50,7 @@ struct NotchContainerView: View {
     private var topRadius: CGFloat { isOpened ? openedTopRadius : closedTopRadius }
     private var bottomRadius: CGFloat {
         if isOpened { return openedBottomRadius }
-        if activityMonitor.isActive { return 18 }
+        if activityMonitor.activity.isActive { return 18 }
         return viewModel.isHovering ? 17 : closedBottomRadius
     }
 
@@ -91,7 +91,11 @@ struct NotchContainerView: View {
                     .animation(viewModel.openAnimation, value: showContent)
                     .clipped()
                 }
-                // Clip the whole shape — covers both header and terminal panel
+                // Constrain the VStack to notchW so NotchShape clips to the correct
+                // pill width. Without this the always-present TerminalTabsView
+                // (openedSize.width wide) would make the VStack always report the
+                // full expanded width, keeping the notch stuck at open width.
+                .frame(width: notchW)
                 .background(Color.black)
                 .clipShape(
                     NotchShape(
@@ -125,7 +129,7 @@ struct NotchContainerView: View {
                 // Activity expansion: spring so it feels alive
                 .animation(
                     .spring(response: 0.38, dampingFraction: 0.72),
-                    value: activityMonitor.isActive
+                    value: activityMonitor.activity
                 )
             }
             .preferredColorScheme(.dark)
@@ -148,7 +152,8 @@ struct NotchContainerView: View {
     @ViewBuilder
     private var headerRow: some View {
         ZStack {
-            if activityMonitor.isActive {
+            switch activityMonitor.activity {
+            case .processing, .runningTool:
                 HStack(spacing: 0) {
                     ClaudeCrabIcon(size: 16, animateLegs: true)
                         .frame(width: sideW)
@@ -157,11 +162,22 @@ struct NotchContainerView: View {
                         .frame(width: sideW)
                 }
                 .transition(.opacity.combined(with: .scale(scale: 0.88)))
-            } else if viewModel.isHovering && !isOpened {
-                Image(systemName: "terminal.fill")
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(.white.opacity(0.4))
-                    .transition(.opacity.animation(.easeIn(duration: 0.1)))
+
+            case .waitingForApproval:
+                HStack(spacing: 0) {
+                    Spacer(minLength: 0)
+                    ApprovalPulse()
+                        .frame(width: sideW)
+                }
+                .transition(.opacity.combined(with: .scale(scale: 0.88)))
+
+            case .idle:
+                if viewModel.isHovering && !isOpened {
+                    Image(systemName: "terminal.fill")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundColor(.white.opacity(0.4))
+                        .transition(.opacity.animation(.easeIn(duration: 0.1)))
+                }
             }
         }
         .padding(.horizontal, isOpened ? 18 : 0)

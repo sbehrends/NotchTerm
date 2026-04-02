@@ -11,7 +11,7 @@ import Combine
 
 @MainActor
 final class ClaudeHookMonitor: ObservableObject {
-    @Published private(set) var isActive: Bool = false
+    @Published private(set) var activity: ClaudeActivity = .idle
 
     private let server = HookSocketServer.shared
 
@@ -28,6 +28,6 @@ final class ClaudeHookMonitor: ObservableObject {
     }
 
     private func handle(_ event: HookEvent) {
-        isActive = event.isProcessing
+        activity = event.activity
     }
 }

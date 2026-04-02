@@ -36,14 +36,20 @@ struct TerminalTabsView: View {
 
     @ViewBuilder
     private var terminalArea: some View {
-        if let active = sessionManager.activeSession {
-            TerminalEmulatorView(session: active)
-                .id(active.id)
-                // Inner margin so text doesn't press against the panel edge
-                .padding(.horizontal, 8)
-                .padding(.bottom, 8)
-        } else {
-            Color.black
+        // All session views stay in the hierarchy permanently — removing a view
+        // discards its AppKit backing store and empties SwiftTerm's dirtyLines,
+        // causing a blank screen when that session is revisited.
+        // ZStack keeps every LocalProcessTerminalView alive; only the active
+        // one is visible and receives input.
+        ZStack {
+            ForEach(sessionManager.sessions) { session in
+                let isActive = session.id == sessionManager.activeSessionId
+                TerminalEmulatorView(session: session)
+                    .padding(.horizontal, 8)
+                    .padding(.bottom, 8)
+                    .opacity(isActive ? 1 : 0)
+                    .allowsHitTesting(isActive)
+            }
         }
     }
 }
