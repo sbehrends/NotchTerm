@@ -35,10 +35,12 @@ struct TerminalEmulatorView: NSViewRepresentable {
         tv.startProcess(executable: shell, args: [], environment: env.map { "\($0.key)=\($0.value)" }, execName: "-\(shellName)", currentDirectory: home)
         tv.processDelegate = context.coordinator
 
-        // Store strong reference so PTY survives tab switches
-        Task { @MainActor in
-            session.terminalView = tv
-        }
+        // Store strong reference so PTY survives tab switches.
+        // Direct assignment is safe: makeNSView is called on @MainActor,
+        // same isolation as TerminalSession. The previous Task{} wrapper
+        // left a window where a rapid second makeNSView call could miss
+        // the existing view and spin up a duplicate shell process.
+        session.terminalView = tv
 
         return tv
     }

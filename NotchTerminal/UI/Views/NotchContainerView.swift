@@ -69,27 +69,25 @@ struct NotchContainerView: View {
                                              : viewModel.deviceNotchRect.height
                         )
 
-                    // ── Terminal panel – always in hierarchy, height=0 when closed ──
-                    // Keeping TerminalTabsView always present prevents SwiftUI from
-                    // destroying and recreating the NSViewRepresentable on each
-                    // open/close cycle. If removed, SwiftTerm's dirtyLines tracking
-                    // empties out while the view is gone, so draw() finds nothing to
-                    // repaint on re-insertion — producing a blank screen.
-                    // SwiftTerm guards against zero rows internally, so height:0 is safe.
+                    // ── Terminal panel – fixed size, clip-based reveal ──────────────
+                    // The inner .frame fixes the NSView at full height always, so
+                    // SwiftTerm never receives a resize (SIGWINCH) during the open/close
+                    // animation. Previously the height animated 0→460, causing the shell
+                    // to redraw at every animation frame and producing jumpy content.
+                    // The outer .frame(height:) + .clipped() controls how much is
+                    // revealed in layout without touching the NSView's actual size.
                     let contentW = viewModel.openedSize.width - 2 * openedTopRadius
                     TerminalTabsView(
                         sessionManager: sessionManager,
                         panelWidth: contentW,
                         onClose: { viewModel.notchClose() }
                     )
-                    .frame(
-                        width: contentW,
-                        height: isOpened ? viewModel.openedSize.height : 0
-                    )
+                    .frame(width: contentW, height: viewModel.openedSize.height)  // fixed; NSView never resizes
+                    .frame(height: isOpened ? viewModel.openedSize.height : 0, alignment: .top)
+                    .clipped()
                     .padding(.horizontal, openedTopRadius)
                     .opacity(showContent ? 1 : 0)
                     .animation(viewModel.openAnimation, value: showContent)
-                    .clipped()
                 }
                 // Constrain the VStack to notchW so NotchShape clips to the correct
                 // pill width. Without this the always-present TerminalTabsView
@@ -138,7 +136,10 @@ struct NotchContainerView: View {
             .onChange(of: viewModel.status) { _, newStatus in
                 if newStatus == .opened {
                     Task {
-                        try? await Task.sleep(for: .milliseconds(40))
+                        // Let the shape expand a bit before revealing content — matches
+                        // the Dynamic Island feel. 80ms gives the spring a visible head
+                        // start without feeling sluggish (full animation is ~420ms).
+                        try? await Task.sleep(for: .milliseconds(80))
                         showContent = true
                     }
                 } else {
