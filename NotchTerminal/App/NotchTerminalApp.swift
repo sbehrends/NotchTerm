@@ -10,11 +10,14 @@ enum PostHogEnv: String {
     case projectToken = "POSTHOG_PROJECT_TOKEN"
     case host = "POSTHOG_HOST"
 
+    // TODO: Remove if open sourced, or make configurable by user
+    private static let defaults: [String: String] = [
+        "POSTHOG_PROJECT_TOKEN": "phc_pMBvNhDDypvkf2rSR2QNnsZrwu2ny3pDhu23cnWHiPHf",
+        "POSTHOG_HOST": "https://us.i.posthog.com"
+    ]
+
     var value: String {
-        guard let value = ProcessInfo.processInfo.environment[rawValue] else {
-            fatalError("Set \(rawValue) in the Xcode scheme environment variables.")
-        }
-        return value
+        ProcessInfo.processInfo.environment[rawValue] ?? Self.defaults[rawValue]!
     }
 }
 
