@@ -5,10 +5,13 @@
 //  Tab chrome + terminal area.
 //  panelWidth is passed explicitly to avoid GeometryReader width ambiguity.
 //
-//  Design: white tab bar on top, dark terminal below with 8 pt inner margin.
+//  Design: dark tab bar on top, dark terminal below with 8 pt inner margin.
 //
 
 import SwiftUI
+
+private let tabBarBackground = Color.black
+private let activeTabFill = Color(white: 0.11)
 
 // MARK: - Main view
 
@@ -24,11 +27,7 @@ struct TerminalTabsView: View {
                 panelWidth: panelWidth,
                 onClose: onClose
             )
-            .background(Color.white)
-
-            Rectangle()
-                .fill(Color.black.opacity(0.1))
-                .frame(height: 0.5)
+            .background(tabBarBackground)
 
             terminalArea
         }
@@ -96,7 +95,7 @@ private struct TabChrome: View {
             Button(action: { sessionManager.addSession() }) {
                 Image(systemName: "plus")
                     .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(.black.opacity(0.35))
+                    .foregroundColor(.white.opacity(0.4))
                     .frame(width: newTabWidth, height: 36)
                     .contentShape(Rectangle())
             }
@@ -109,7 +108,7 @@ private struct TabChrome: View {
             Button(action: onClose) {
                 Image(systemName: "xmark")
                     .font(.system(size: 9.5, weight: .semibold))
-                    .foregroundColor(.black.opacity(0.28))
+                    .foregroundColor(.white.opacity(0.28))
                     .frame(width: closePanelWidth, height: 36)
                     .contentShape(Rectangle())
             }
@@ -132,67 +131,59 @@ private struct TabPill: View {
     @State private var isHovered = false
 
     private var closeOpacity: Double {
-        isActive ? 0.45 : (isHovered ? 0.3 : 0.1)
+        isActive ? 0.5 : (isHovered ? 0.35 : 0.0)
     }
 
-    private var textOpacity: Double {
-        isActive ? 0.85 : (isHovered ? 0.55 : 0.32)
+    private var textColor: Color {
+        isActive ? Color.white.opacity(0.85) : Color.white.opacity(isHovered ? 0.65 : 0.38)
     }
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            // Active tab subtle background
+        ZStack {
+            // Active capsule pill background
             if isActive {
-                Color.black.opacity(0.04)
+                RoundedRectangle(cornerRadius: 7, style: .continuous)
+                    .fill(activeTabFill)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 5)
+            } else if isHovered {
+                RoundedRectangle(cornerRadius: 7, style: .continuous)
+                    .fill(Color.white.opacity(0.07))
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 5)
             }
 
             // Label + close button
             HStack(spacing: 0) {
                 Text(session.title)
                     .font(.system(size: 11.5, design: .monospaced))
-                    .foregroundColor(.black.opacity(textOpacity))
+                    .foregroundColor(textColor)
                     .lineLimit(1)
                     .truncationMode(.middle)
-                    .padding(.leading, 10)
+                    .padding(.leading, 12)
                     .padding(.trailing, 4)
-                    .animation(.easeInOut(duration: 0.12), value: textOpacity)
+                    .animation(.easeInOut(duration: 0.12), value: isActive)
 
                 Spacer(minLength: 0)
 
                 Button(action: onClose) {
                     ZStack {
                         Circle()
-                            .fill(Color.black.opacity((isHovered || isActive) ? 0.07 : 0))
+                            .fill((isActive ? Color.black : Color.white).opacity((isHovered || isActive) ? 0.1 : 0))
                             .frame(width: 16, height: 16)
                         Image(systemName: "xmark")
                             .font(.system(size: 7, weight: .bold))
-                            .foregroundColor(.black.opacity(closeOpacity))
+                            .foregroundColor(Color.white.opacity(closeOpacity))
                     }
                     .frame(width: 22, height: 22)
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .padding(.trailing, 5)
+                .padding(.trailing, 7)
+                .opacity(closeOpacity > 0 ? 1 : 0)
                 .animation(.easeInOut(duration: 0.12), value: closeOpacity)
             }
             .frame(height: 36)
-
-            // Active indicator line
-            if isActive {
-                Rectangle()
-                    .fill(Color.black.opacity(0.5))
-                    .frame(height: 1.5)
-                    .padding(.horizontal, 8)
-            }
-
-            // Right-edge separator
-            HStack {
-                Spacer()
-                Rectangle()
-                    .fill(Color.black.opacity(0.07))
-                    .frame(width: 0.5)
-                    .padding(.vertical, 8)
-            }
         }
         .frame(width: width, height: 36)
         .contentShape(Rectangle())
