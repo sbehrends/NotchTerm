@@ -22,7 +22,7 @@ enum NotchOpenReason {
 }
 
 @MainActor
-class NotchViewModel: ObservableObject {
+final class NotchViewModel: ObservableObject {
     // MARK: - Published State
 
     @Published var status: NotchStatus = .closed
@@ -93,7 +93,7 @@ class NotchViewModel: ObservableObject {
 
     private func setupEventHandlers() {
         events.mouseLocation
-            .throttle(for: .milliseconds(50), scheduler: DispatchQueue.main, latest: true)
+            .throttle(for: .milliseconds(100), scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] location in self?.handleMouseMove(location) }
             .store(in: &cancellables)
 

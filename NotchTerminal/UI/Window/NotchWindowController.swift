@@ -9,7 +9,7 @@ import AppKit
 import Combine
 import SwiftUI
 
-class NotchWindowController: NSWindowController {
+final class NotchWindowController: NSWindowController {
     let viewModel: NotchViewModel
     let sessionManager: TerminalSessionManager
     private var cancellables = Set<AnyCancellable>()

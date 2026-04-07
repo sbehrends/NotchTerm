@@ -30,9 +30,9 @@ final class ClaudeActivityMonitor: ObservableObject {
     }
 
     private func checkActivity() {
-        Task { @MainActor in
+        Task {
             let running = await Self.claudeIsRunning()
-            self.isActive = running
+            await MainActor.run { self.isActive = running }
         }
     }
 

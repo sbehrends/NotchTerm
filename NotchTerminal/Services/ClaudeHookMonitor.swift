@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import PostHog
 
 @MainActor
 final class ClaudeHookMonitor: ObservableObject {
@@ -17,7 +18,7 @@ final class ClaudeHookMonitor: ObservableObject {
 
     func startMonitoring() {
         server.start { [weak self] event in
-            Task { @MainActor [weak self] in
+            Task { @MainActor in
                 self?.handle(event)
             }
         }
@@ -29,5 +30,6 @@ final class ClaudeHookMonitor: ObservableObject {
 
     private func handle(_ event: HookEvent) {
         activity = event.activity
+        PostHogSDK.shared.capture("hook_activity", properties: ["provider": "claude", "status": event.status])
     }
 }

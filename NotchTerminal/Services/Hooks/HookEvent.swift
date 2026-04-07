@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import PostHog
 
 // MARK: - Activity state
 
@@ -37,8 +36,6 @@ struct HookEvent: Codable, Sendable {
     }
 
     var activity: ClaudeActivity {
-        // PostHog: Track Claude usage
-        PostHogSDK.shared.capture("hook_activity", properties: ["provider": "claude", "status": status])
         switch status {
         case "processing", "compacting": return .processing
         case "running_tool":             return .runningTool

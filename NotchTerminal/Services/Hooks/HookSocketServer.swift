@@ -50,9 +50,10 @@ final class HookSocketServer: @unchecked Sendable {
 
         var addr = sockaddr_un()
         addr.sun_family = sa_family_t(AF_UNIX)
+        let pathMaxLen = MemoryLayout.size(ofValue: addr.sun_path)
         _ = Self.socketPath.withCString { ptr -> Int32 in
             withUnsafeMutablePointer(to: &addr.sun_path) { pathPtr -> Int32 in
-                strcpy(UnsafeMutableRawPointer(pathPtr).assumingMemoryBound(to: CChar.self), ptr)
+                _ = strlcpy(UnsafeMutableRawPointer(pathPtr).assumingMemoryBound(to: CChar.self), ptr, pathMaxLen)
                 return 0
             }
         }
@@ -69,7 +70,7 @@ final class HookSocketServer: @unchecked Sendable {
             return
         }
 
-        chmod(Self.socketPath, 0o777)
+        chmod(Self.socketPath, 0o600)
 
         guard listen(serverSocket, 10) == 0 else {
             close(serverSocket)
