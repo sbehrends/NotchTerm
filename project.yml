@@ -1,4 +1,4 @@
-name: NotchTerminal
+name: NotchTerm
 options:
   bundleIdPrefix: com.sergiobehrends
   deploymentTarget:
@@ -18,14 +18,14 @@ packages:
     from: 2.6.0
 
 targets:
-  NotchTerminal:
+  NotchTerm:
     type: application
     platform: macOS
     deploymentTarget: "15.0"
     sources:
-      - path: NotchTerminal
+      - path: NotchTerm
     resources:
-      - path: NotchTerminal/Resources/notch-terminal-hook.py
+      - path: NotchTerm/Resources/notchterm-hook.py
     dependencies:
       - package: SwiftTerm
       - package: PostHog
@@ -33,7 +33,7 @@ targets:
       - package: Sparkle
         product: Sparkle
     info:
-      path: NotchTerminal/Info.plist
+      path: NotchTerm/Info.plist
       properties:
         LSUIElement: true
         NSPrincipalClass: NSApplication
@@ -42,18 +42,18 @@ targets:
         # SUFeedURL: raw URL of the appcast committed to your GitHub repo.
         #   ▸ EDIT the OWNER/REPO below once the repo exists.
         # SUPublicEDKey: filled in by `generate_keys` (see distribute.sh / README).
-        SUFeedURL: https://raw.githubusercontent.com/OWNER/NotchTerminal/main/appcast.xml
+        SUFeedURL: https://raw.githubusercontent.com/OWNER/NotchTerm/main/appcast.xml
         SUPublicEDKey: f9tOAGKFiWdx65zlJKycPbAhnWDdIgRLgjsZHLnKOBQ=
         SUEnableAutomaticChecks: true
         SUScheduledCheckInterval: 86400
         SUAllowsAutomaticUpdates: true
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.sergiobehrends.NotchTerminal
+        PRODUCT_BUNDLE_IDENTIFIER: com.sergiobehrends.NotchTerm
         SWIFT_VERSION: "6.0"
         ENABLE_APP_SANDBOX: "NO"
         MACOSX_DEPLOYMENT_TARGET: "15.0"
-        CODE_SIGN_ENTITLEMENTS: NotchTerminal/NotchTerminal.entitlements
+        CODE_SIGN_ENTITLEMENTS: NotchTerm/NotchTerm.entitlements
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
       configs:
