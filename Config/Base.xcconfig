@@ -1,0 +1,11 @@
+// Base.xcconfig — build configuration shared by all configs.
+//
+// Secrets (e.g. the PostHog project token) live in Secrets.xcconfig, which is
+// gitignored. Copy Secrets.example.xcconfig → Secrets.xcconfig and fill it in.
+// The optional include below means the build still succeeds without that file
+// (analytics are simply disabled when the token is empty).
+
+// Default: empty. Overridden by Secrets.xcconfig when present.
+POSTHOG_PROJECT_TOKEN =
+
+#include? "Secrets.xcconfig"

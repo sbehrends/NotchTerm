@@ -65,6 +65,7 @@
 		B196C7C832FA72A7FA63F5EB /* NotchTerm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotchTerm.entitlements; sourceTree = "<group>"; };
 		B6FFA3FBFD726A14A288ADFC /* NotchTermApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchTermApp.swift; sourceTree = "<group>"; };
 		BAA40C72EF7F1F7257DDFBCF /* TerminalSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSession.swift; sourceTree = "<group>"; };
+		DEA040F92CFA095003843D62 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		DEAE441BA9A1BD004F0CFD8D /* ClaudeHookMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeHookMonitor.swift; sourceTree = "<group>"; };
 		F1D1118B5679F8E0FC970D01 /* TerminalSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSessionManager.swift; sourceTree = "<group>"; };
 		F9397E2497339AC82D2C764B /* TerminalTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalTabsView.swift; sourceTree = "<group>"; };
@@ -202,6 +203,14 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		DC68941D95125C8C062E3B70 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				DEA040F92CFA095003843D62 /* Base.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		E40840BBD4A3098A566C3BC0 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -216,6 +225,7 @@
 		F8CDA860D0D1532E42004677 = {
 			isa = PBXGroup;
 			children = (
+				DC68941D95125C8C062E3B70 /* Config */,
 				7AD6876217067F3F302FC32D /* NotchTerm */,
 				876A219D35145A82AC6C08EE /* Products */,
 			);
@@ -340,6 +350,7 @@
 /* Begin XCBuildConfiguration section */
 		4820743E074A67316306C39C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEA040F92CFA095003843D62 /* Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NotchTerm/NotchTerm.entitlements;
@@ -426,6 +437,7 @@
 		};
 		A68943FF1B856F104DAA7828 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEA040F92CFA095003843D62 /* Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NotchTerm/NotchTerm.entitlements;
