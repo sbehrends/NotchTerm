@@ -55,4 +55,16 @@ final class UpdateController {
     var canCheckForUpdates: Bool {
         controller.updater.canCheckForUpdates
     }
+
+    /// The underlying updater, exposed for KVO (e.g. `publisher(for: \.canCheckForUpdates)`).
+    var updater: SPUUpdater {
+        controller.updater
+    }
+
+    /// Background update checks on/off. Sparkle persists this itself
+    /// (SUEnableAutomaticChecks in its own defaults) — no mirroring needed.
+    var automaticallyChecksForUpdates: Bool {
+        get { controller.updater.automaticallyChecksForUpdates }
+        set { controller.updater.automaticallyChecksForUpdates = newValue }
+    }
 }

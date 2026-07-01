@@ -164,9 +164,13 @@ final class NotchWindowController: NSWindowController {
         keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
             guard let self else { return event }
 
-            // ESC always closes (even when closed it's a no-op)
+            // ESC steps back: settings → terminal first, then closes the panel
             if event.keyCode == 53 {
-                self.viewModel.notchClose()
+                if self.viewModel.status == .opened, self.viewModel.panelContent == .settings {
+                    self.viewModel.closeSettings()
+                } else {
+                    self.viewModel.notchClose()
+                }
                 return nil
             }
 
@@ -176,6 +180,14 @@ final class NotchWindowController: NSWindowController {
             let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
             guard flags == .command,
                   let chars = event.charactersIgnoringModifiers else { return event }
+
+            if chars == "," {
+                self.viewModel.toggleSettings()
+                return nil
+            }
+
+            // Tab shortcuts only apply while the terminal pane is showing
+            guard self.viewModel.panelContent == .terminal else { return event }
 
             switch chars {
             case "t":

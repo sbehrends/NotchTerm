@@ -21,6 +21,12 @@ enum NotchOpenReason {
     case boot
 }
 
+/// What the expanded panel is currently showing.
+enum NotchPanelContent: Equatable {
+    case terminal
+    case settings
+}
+
 @MainActor
 final class NotchViewModel: ObservableObject {
     // MARK: - Published State
@@ -28,6 +34,7 @@ final class NotchViewModel: ObservableObject {
     @Published var status: NotchStatus = .closed
     @Published var openReason: NotchOpenReason = .click
     @Published var isHovering: Bool = false
+    @Published var panelContent: NotchPanelContent = .terminal
 
     // MARK: - Geometry
 
@@ -183,8 +190,23 @@ final class NotchViewModel: ObservableObject {
             status = .closed
             isHovering = false
         }
+        // Always reopen on the terminal, never on a stale settings pane
+        panelContent = .terminal
         // PostHog: Track notch close
         PostHogSDK.shared.capture("notch_closed")
+    }
+
+    func toggleSettings() {
+        guard status == .opened else { return }
+        panelContent = panelContent == .settings ? .terminal : .settings
+        if panelContent == .settings {
+            // PostHog: Track settings open
+            PostHogSDK.shared.capture("settings_opened")
+        }
+    }
+
+    func closeSettings() {
+        panelContent = .terminal
     }
 
     func performBootAnimation() {
