@@ -346,7 +346,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = NO;
 				INFOPLIST_FILE = NotchTerm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -354,7 +354,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sergiobehrends.NotchTerm;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;
@@ -431,7 +431,7 @@
 				CODE_SIGN_ENTITLEMENTS = NotchTerm/NotchTerm.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = NO;
 				INFOPLIST_FILE = NotchTerm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -439,7 +439,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sergiobehrends.NotchTerm;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;

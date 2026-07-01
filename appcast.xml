@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>NotchTerm</title>
+        <item>
+            <title>0.2</title>
+            <pubDate>Thu, 02 Jul 2026 00:19:48 +0200</pubDate>
+            <sparkle:version>2</sparkle:version>
+            <sparkle:shortVersionString>0.2</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/sbehrends/NotchTerm/releases/download/updates/NotchTerm-0.2.zip" length="3370823" type="application/octet-stream" sparkle:edSignature="feXHi8gisgp7OhhXThs5OFvNg9ws//5w73DnSRG03JCXjywQyIQdDbUtG3kRLNzb+tS83QcIzyMMHvezK3XpCg=="/>
+        </item>
+    </channel>
+</rss>

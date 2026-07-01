@@ -1,6 +1,9 @@
 # Xcode
 build/
 DerivedData/
+
+# Release artifacts — zips live on GitHub Releases; only root appcast.xml is committed
+releases/
 *.xcodeproj/xcuserdata/
 *.xcworkspace/xcuserdata/
 *.pbxuser
