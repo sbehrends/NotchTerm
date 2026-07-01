@@ -28,15 +28,18 @@
 		B66590D4E20FC29B5AC2CF77 /* NotchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982004DB8B40D4AC74E03B72 /* NotchViewController.swift */; };
 		B9925245C4DB61C673079A5F /* TerminalSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAF3366BD48E629E3D96AD0 /* TerminalSessionManager.swift */; };
 		BF84946B5D59C9DF665EACAB /* TerminalTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FFB807B2C76FDD51D4BC54 /* TerminalTabsView.swift */; };
+		C4F8E379AFE5A8B5D0E2EBFF /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2CDAEE72B881B8DFE17EA4 /* UpdateController.swift */; };
 		CF14091F4711136847341685 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3965A1EDF020FFDADFD5281 /* WindowManager.swift */; };
 		D935372223B4DC3D50FFE423 /* NotchWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA4495AE0479F3DB91ED6B4 /* NotchWindowController.swift */; };
 		DF13B648FE4D5B238A712B04 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 571B6D7864A913D8595CAFFC /* SwiftTerm */; };
 		EE3D89D452B69B10E9EDDA01 /* ClaudeActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3062DCF03EF3187FD69ED203 /* ClaudeActivityMonitor.swift */; };
 		F26B45D6192670564854BD51 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = D99520A93C7338EE299ECC83 /* PostHog */; };
+		F4D4B915EBD12D0B5E32ED0B /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = A2E2F9EE8CCD51C190F99A10 /* Sparkle */; };
 		FFA0007A186AFBF12C0C6A38 /* NotchGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DA097472A55A023DE9234B /* NotchGeometry.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0611CB7096F421B05D2187AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0BE54CD72A497D3D85C2E593 /* HookSocketServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookSocketServer.swift; sourceTree = "<group>"; };
 		0EF2106AA5F0131074628D81 /* ClaudeCrabIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeCrabIcon.swift; sourceTree = "<group>"; };
 		1C875441D55991338E8757F7 /* NotchWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchWindow.swift; sourceTree = "<group>"; };
@@ -51,6 +54,7 @@
 		6F3D35E0E4ED8999EC9D71A3 /* EventMonitors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitors.swift; sourceTree = "<group>"; };
 		7A19628A658BA1C5321FFDB3 /* NotchTerminal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotchTerminal.entitlements; sourceTree = "<group>"; };
 		982004DB8B40D4AC74E03B72 /* NotchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchViewController.swift; sourceTree = "<group>"; };
+		9C2CDAEE72B881B8DFE17EA4 /* UpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateController.swift; sourceTree = "<group>"; };
 		9C7B52BC99F64A3BF2CCCCD2 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 		9E3C4EE6464F2198D508B71C /* NotchContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchContainerView.swift; sourceTree = "<group>"; };
 		A3965A1EDF020FFDADFD5281 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
@@ -73,6 +77,7 @@
 			files = (
 				DF13B648FE4D5B238A712B04 /* SwiftTerm in Frameworks */,
 				F26B45D6192670564854BD51 /* PostHog in Frameworks */,
+				F4D4B915EBD12D0B5E32ED0B /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +106,7 @@
 				6D8A562480E05EA97D99FAA4 /* Hooks */,
 				3062DCF03EF3187FD69ED203 /* ClaudeActivityMonitor.swift */,
 				EECD1F5C34591BD89D6C29C8 /* ClaudeHookMonitor.swift */,
+				9C2CDAEE72B881B8DFE17EA4 /* UpdateController.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -153,6 +159,7 @@
 				5F61A792B75F39525B36D688 /* Services */,
 				8F8A7FDB6D1BB084894654CA /* Terminal */,
 				FC3FFEE6BF7DCA19379DBB8E /* UI */,
+				0611CB7096F421B05D2187AD /* Info.plist */,
 				7A19628A658BA1C5321FFDB3 /* NotchTerminal.entitlements */,
 			);
 			path = NotchTerminal;
@@ -243,6 +250,7 @@
 			packageProductDependencies = (
 				571B6D7864A913D8595CAFFC /* SwiftTerm */,
 				D99520A93C7338EE299ECC83 /* PostHog */,
+				A2E2F9EE8CCD51C190F99A10 /* Sparkle */,
 			);
 			productName = NotchTerminal;
 			productReference = 28A44BCA0301573E1C657615 /* NotchTerminal.app */;
@@ -257,9 +265,6 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
-					C9D2FBAAC989942AC132A0D8 = {
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 9AFC8CE14901116CE1739419 /* Build configuration list for PBXProject "NotchTerminal" */;
@@ -273,6 +278,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				B220297DDBF95D91B2BF9444 /* XCRemoteSwiftPackageReference "posthog-ios" */,
+				C8F4F00ACC4EE2D0B4744B75 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				4E46D70CC07FA9FE1806DDA6 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -324,6 +330,7 @@
 				B9925245C4DB61C673079A5F /* TerminalSessionManager.swift in Sources */,
 				BF84946B5D59C9DF665EACAB /* TerminalTabsView.swift in Sources */,
 				96E5E53EF68465B4DCFF4CEF /* TerminalView.swift in Sources */,
+				C4F8E379AFE5A8B5D0E2EBFF /* UpdateController.swift in Sources */,
 				CF14091F4711136847341685 /* WindowManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -336,16 +343,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NotchTerminal/NotchTerminal.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RQTN444Q64;
 				ENABLE_APP_SANDBOX = NO;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_FILE = NotchTerminal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -482,16 +485,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NotchTerminal/NotchTerminal.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = PBRP6686B2;
 				ENABLE_APP_SANDBOX = NO;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_FILE = NotchTerminal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -544,6 +542,14 @@
 				minimumVersion = 3.48.3;
 			};
 		};
+		C8F4F00ACC4EE2D0B4744B75 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -551,6 +557,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4E46D70CC07FA9FE1806DDA6 /* XCRemoteSwiftPackageReference "SwiftTerm" */;
 			productName = SwiftTerm;
+		};
+		A2E2F9EE8CCD51C190F99A10 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C8F4F00ACC4EE2D0B4744B75 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 		D99520A93C7338EE299ECC83 /* PostHog */ = {
 			isa = XCSwiftPackageProductDependency;

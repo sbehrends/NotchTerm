@@ -22,6 +22,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self?.windowManager?.setupNotchWindow()
         }
 
+        // Sparkle: start auto-update checks (scheduled background + manual).
+        UpdateController.shared.start()
+
         // PostHog: Track app launch
         PostHogSDK.shared.capture("app_launched")
     }
