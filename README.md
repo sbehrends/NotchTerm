@@ -1,4 +1,4 @@
-# NotchTerminal
+# NotchTerm
 
 A macOS terminal emulator that lives in the MacBook Pro notch. Click or hover to expand a full multi-tab shell directly from the top of your screen — no Dock icon, no menu bar clutter.
 
@@ -29,8 +29,8 @@ brew install xcodegen
 xcodegen generate
 
 # Open and build in Xcode, or via CLI
-xcodebuild -project NotchTerminal.xcodeproj \
-           -scheme NotchTerminal \
+xcodebuild -project NotchTerm.xcodeproj \
+           -scheme NotchTerm \
            -destination 'platform=macOS' \
            build
 ```
@@ -40,9 +40,9 @@ xcodebuild -project NotchTerminal.xcodeproj \
 ## Project Structure
 
 ```
-NotchTerminal/
+NotchTerm/
 ├── App/
-│   ├── NotchTerminalApp.swift       @main entry, Settings scene
+│   ├── NotchTermApp.swift       @main entry, Settings scene
 │   ├── AppDelegate.swift            activation policy, window setup, hook install
 │   ├── WindowManager.swift          creates/recreates the notch window per screen
 │   └── ScreenObserver.swift         rebuilds window on display configuration change
@@ -61,7 +61,7 @@ NotchTerminal/
 │   ├── ClaudeActivityMonitor.swift  legacy pgrep-based fallback
 │   └── Hooks/
 │       ├── HookEvent.swift          Codable model for socket events
-│       ├── HookSocketServer.swift   GCD Unix socket server (/tmp/notch-terminal.sock)
+│       ├── HookSocketServer.swift   GCD Unix socket server (/tmp/notchterm.sock)
 │       └── HookInstaller.swift      copies script → ~/.claude/hooks/, patches settings.json
 ├── UI/
 │   ├── Window/
@@ -76,12 +76,12 @@ NotchTerminal/
 │       ├── ClaudeCrabIcon.swift     pixel-art crab + ProcessingSpinner
 │       └── NotchShape.swift         animatable quad-curve notch path
 └── Resources/
-    └── notch-terminal-hook.py       Claude Code hook script (bundled resource)
+    └── notchterm-hook.py       Claude Code hook script (bundled resource)
 ```
 
 ## Claude Code Integration
 
-On first launch the app installs a Python hook script to `~/.claude/hooks/notch-terminal-hook.py` and registers it in `~/.claude/settings.json` for the following events:
+On first launch the app installs a Python hook script to `~/.claude/hooks/notchterm-hook.py` and registers it in `~/.claude/settings.json` for the following events:
 
 | Hook | Status reported |
 |---|---|
@@ -92,7 +92,7 @@ On first launch the app installs a Python hook script to `~/.claude/hooks/notch-
 | `SessionEnd` | `ended` |
 | `PreCompact` | `compacting` |
 
-When status is `processing`, `running_tool`, or `compacting` the notch pill expands sideways and shows the animated crab + spinner. The app listens on `/tmp/notch-terminal.sock`.
+When status is `processing`, `running_tool`, or `compacting` the notch pill expands sideways and shows the animated crab + spinner. The app listens on `/tmp/notchterm.sock`.
 
 ## Design Details
 
