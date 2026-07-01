@@ -15,6 +15,12 @@ final class NotchWindowController: NSWindowController {
     private var cancellables = Set<AnyCancellable>()
     private nonisolated(unsafe) var keyMonitor: Any?
 
+    /// Normal level: floats above the menu bar so the pill is always visible.
+    private let elevatedLevel: NSWindow.Level = .mainMenu + 3
+    /// Yielded level: drops below system dialogs (TCC / folder-access prompts)
+    /// so they're not covered by an expanded panel.
+    private let loweredLevel: NSWindow.Level = .normal
+
     init(screen: NSScreen) {
         let screenFrame = screen.frame
         let notchSize = screen.notchSize
@@ -61,20 +67,25 @@ final class NotchWindowController: NSWindowController {
 
         viewModel.$status
             .receive(on: DispatchQueue.main)
-            .sink { [weak notchWindow] status in
+            .sink { [weak self, weak notchWindow] status in
+                guard let self, let notchWindow else { return }
+                // Any status change restores elevation; a system dialog only
+                // lowers us transiently via appDidResignActive.
+                notchWindow.level = self.elevatedLevel
                 switch status {
                 case .opened:
-                    notchWindow?.ignoresMouseEvents = false
+                    notchWindow.ignoresMouseEvents = false
                     NSApp.activate(ignoringOtherApps: false)
-                    notchWindow?.makeKey()
+                    notchWindow.makeKey()
                 case .closed:
-                    notchWindow?.ignoresMouseEvents = true
+                    notchWindow.ignoresMouseEvents = true
                 }
             }
             .store(in: &cancellables)
 
         notchWindow.ignoresMouseEvents = true
         setupKeyboardShortcuts()
+        setupSystemDialogYielding()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
             self?.viewModel.performBootAnimation()
@@ -89,6 +100,62 @@ final class NotchWindowController: NSWindowController {
         if let monitor = keyMonitor {
             NSEvent.removeMonitor(monitor)
         }
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    // MARK: - System dialog yielding (Option B)
+
+    /// When macOS shows a system dialog (e.g. a folder-access / TCC prompt) it
+    /// takes foreground on behalf of a system agent. We watch the workspace's
+    /// frontmost application (reliable cross-process, unlike our own
+    /// active/resign notifications for an accessory + nonactivating panel):
+    /// when something other than us is frontmost and the panel is expanded, we
+    /// drop below system dialogs; when we're frontmost again, we restore.
+    private func setupSystemDialogYielding() {
+        let wsCenter = NSWorkspace.shared.notificationCenter
+        wsCenter.addObserver(
+            self,
+            selector: #selector(frontmostAppChanged(_:)),
+            name: NSWorkspace.didActivateApplicationNotification,
+            object: nil
+        )
+        // App-level fallbacks in case activation does fire.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidResignActive),
+            name: NSApplication.didResignActiveNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidBecomeActive),
+            name: NSApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+
+    @objc private func frontmostAppChanged(_ note: Notification) {
+        let app = note.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication
+        let isSelf = app?.processIdentifier == ProcessInfo.processInfo.processIdentifier
+
+        if isSelf {
+            setYielded(false)
+        } else if viewModel.status == .opened {
+            setYielded(true)
+        }
+    }
+
+    @objc private func appDidResignActive() {
+        guard viewModel.status == .opened else { return }
+        setYielded(true)
+    }
+
+    @objc private func appDidBecomeActive() {
+        setYielded(false)
+    }
+
+    private func setYielded(_ yielded: Bool) {
+        window?.level = yielded ? loweredLevel : elevatedLevel
     }
 
     // MARK: - Keyboard shortcuts
