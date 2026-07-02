@@ -39,6 +39,8 @@ enum AnalyticsPreference {
 struct SettingsPaneView: View {
     let panelWidth: CGFloat
 
+    @ObservedObject private var updateController = UpdateController.shared
+
     // SMAppService is the source of truth; re-read on appear so the toggle
     // stays honest if the user changed it in System Settings → Login Items.
     @State private var launchAtLogin = false
@@ -91,11 +93,27 @@ struct SettingsPaneView: View {
 
                 Spacer(minLength: 0)
 
-                Button("Check for Updates…") {
-                    UpdateController.shared.checkForUpdates()
+                // Inline check feedback — no Sparkle dialogs for check results
+                if let message = updateStatusMessage {
+                    Text(message)
+                        .font(.system(size: 10.5))
+                        .foregroundColor(.white.opacity(0.45))
+                        .lineLimit(1)
+                        .transition(.opacity)
                 }
-                .buttonStyle(SettingsButtonStyle())
-                .disabled(!canCheckForUpdates)
+
+                if case .updateAvailable = updateController.checkStatus {
+                    Button("Install Update…") {
+                        updateController.installUpdate()
+                    }
+                    .buttonStyle(SettingsButtonStyle())
+                } else {
+                    Button("Check for Updates…") {
+                        updateController.checkForUpdatesQuietly()
+                    }
+                    .buttonStyle(SettingsButtonStyle())
+                    .disabled(!canCheckForUpdates || updateController.checkStatus == .checking)
+                }
 
                 Button("Quit NotchTerm") {
                     NSApp.terminate(nil)
@@ -104,12 +122,14 @@ struct SettingsPaneView: View {
                 .help("Quit  ⌘Q")
             }
             .padding(.bottom, 4)
+            .animation(.easeInOut(duration: 0.15), value: updateController.checkStatus)
         }
         .padding(.horizontal, 6)
         .padding(.vertical, 8)
         .frame(width: panelWidth)
         .onAppear {
             launchAtLogin = SMAppService.mainApp.status == .enabled
+            updateController.clearTransientCheckStatus()
         }
         .onChange(of: launchAtLogin) { _, enabled in
             setLaunchAtLogin(enabled)
@@ -122,6 +142,16 @@ struct SettingsPaneView: View {
         }
         .onReceive(UpdateController.shared.updater.publisher(for: \.canCheckForUpdates)) {
             canCheckForUpdates = $0
+        }
+    }
+
+    private var updateStatusMessage: String? {
+        switch updateController.checkStatus {
+        case .idle:                          return nil
+        case .checking:                      return "Checking…"
+        case .upToDate:                      return "You're up to date"
+        case .updateAvailable(let version):  return "Version \(version) available"
+        case .failed:                        return "Couldn't check for updates"
         }
     }
 
