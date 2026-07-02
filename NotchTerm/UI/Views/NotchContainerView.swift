@@ -195,16 +195,19 @@ struct NotchContainerView: View {
                     }
                 }
             }
-            // Keep activity icons clear of the gear when the panel is open
-            .padding(.trailing, isOpened ? iconSlotW : 0)
+            // Keep activity icons clear of the gear slot when the panel is open
+            .padding(.trailing, isOpened ? sideW : 0)
 
             if isOpened {
                 HStack {
                     Spacer(minLength: 0)
+                    // Same slot geometry as the crab/spinner icons: centered
+                    // in a sideW-wide frame so left and right icons align.
                     SettingsGearButton(
                         isActive: viewModel.panelContent == .settings,
                         action: { viewModel.toggleSettings() }
                     )
+                    .frame(width: sideW)
                 }
                 .transition(.opacity)
             }
