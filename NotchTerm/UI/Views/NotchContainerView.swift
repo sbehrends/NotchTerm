@@ -77,11 +77,24 @@ struct NotchContainerView: View {
                     // The outer .frame(height:) + .clipped() controls how much is
                     // revealed in layout without touching the NSView's actual size.
                     let contentW = viewModel.openedSize.width - 2 * openedTopRadius
-                    TerminalTabsView(
-                        sessionManager: sessionManager,
-                        panelWidth: contentW,
-                        onClose: { viewModel.notchClose() }
-                    )
+                    ZStack {
+                        // Terminal stays mounted while settings is shown — same
+                        // keep-alive rationale as tab switching: unmounting would
+                        // drop the SwiftTerm views' backing state and PTY output.
+                        TerminalTabsView(
+                            sessionManager: sessionManager,
+                            panelWidth: contentW,
+                            onClose: { viewModel.notchClose() }
+                        )
+                        .opacity(viewModel.panelContent == .terminal ? 1 : 0)
+                        .allowsHitTesting(viewModel.panelContent == .terminal)
+
+                        if viewModel.panelContent == .settings {
+                            SettingsPaneView(panelWidth: contentW)
+                                .transition(.opacity)
+                        }
+                    }
+                    .animation(.easeInOut(duration: 0.18), value: viewModel.panelContent)
                     .frame(width: contentW, height: viewModel.openedSize.height)  // fixed; NSView never resizes
                     .frame(height: isOpened ? viewModel.openedSize.height : 0, alignment: .top)
                     .clipped()
@@ -153,35 +166,77 @@ struct NotchContainerView: View {
     @ViewBuilder
     private var headerRow: some View {
         ZStack {
-            switch activityMonitor.activity {
-            case .processing, .runningTool:
-                HStack(spacing: 0) {
-                    ClaudeCrabIcon(size: 16, animateLegs: true)
-                        .frame(width: sideW)
-                    Spacer(minLength: 0)
-                    ProcessingSpinner()
-                        .frame(width: sideW)
-                }
-                .transition(.opacity.combined(with: .scale(scale: 0.88)))
+            Group {
+                switch activityMonitor.activity {
+                case .processing, .runningTool:
+                    HStack(spacing: 0) {
+                        ClaudeCrabIcon(size: 16, animateLegs: true)
+                            .frame(width: sideW)
+                        Spacer(minLength: 0)
+                        ProcessingSpinner()
+                            .frame(width: sideW)
+                    }
+                    .transition(.opacity.combined(with: .scale(scale: 0.88)))
 
-            case .waitingForApproval:
-                HStack(spacing: 0) {
-                    Spacer(minLength: 0)
-                    ApprovalPulse()
-                        .frame(width: sideW)
-                }
-                .transition(.opacity.combined(with: .scale(scale: 0.88)))
+                case .waitingForApproval:
+                    HStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        ApprovalPulse()
+                            .frame(width: sideW)
+                    }
+                    .transition(.opacity.combined(with: .scale(scale: 0.88)))
 
-            case .idle:
-                if viewModel.isHovering && !isOpened {
-                    Image(systemName: "terminal.fill")
-                        .font(.system(size: 10, weight: .medium))
-                        .foregroundColor(.white.opacity(0.4))
-                        .transition(.opacity.animation(.easeIn(duration: 0.1)))
+                case .idle:
+                    if viewModel.isHovering && !isOpened {
+                        Image(systemName: "terminal.fill")
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(.white.opacity(0.4))
+                            .transition(.opacity.animation(.easeIn(duration: 0.1)))
+                    }
                 }
+            }
+            // Keep activity icons clear of the gear slot when the panel is open
+            .padding(.trailing, isOpened ? sideW : 0)
+
+            if isOpened {
+                HStack {
+                    Spacer(minLength: 0)
+                    // Same slot geometry as the crab/spinner icons: centered
+                    // in a sideW-wide frame so left and right icons align.
+                    SettingsGearButton(
+                        isActive: viewModel.panelContent == .settings,
+                        action: { viewModel.toggleSettings() }
+                    )
+                    .frame(width: sideW)
+                }
+                .transition(.opacity)
             }
         }
         .padding(.horizontal, isOpened ? 18 : 0)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+// MARK: - Settings gear
+
+private struct SettingsGearButton: View {
+    let isActive: Bool
+    let action: () -> Void
+
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: "gearshape.fill")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.white.opacity(isActive ? 0.85 : (isHovered ? 0.6 : 0.3)))
+                .frame(width: 28, height: 28)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help("Settings  ⌘,")
+        .onHover { isHovered = $0 }
+        .animation(.easeInOut(duration: 0.12), value: isHovered)
+        .animation(.easeInOut(duration: 0.12), value: isActive)
     }
 }

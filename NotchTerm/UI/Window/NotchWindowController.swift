@@ -176,9 +176,15 @@ final class NotchWindowController: NSWindowController {
 
             // ESC: plain ESC must reach the shell (vim, less, Claude Code's
             // ESC-to-interrupt). Close the panel on double-ESC — the first
-            // press still goes through to the PTY.
+            // press still goes through to the PTY. The settings pane has no
+            // PTY to feed, so there a single ESC steps back to the terminal.
             if event.keyCode == 53 {
                 guard self.viewModel.status == .opened else { return event }
+                if self.viewModel.panelContent == .settings {
+                    self.lastEscTimestamp = 0
+                    self.viewModel.closeSettings()
+                    return nil
+                }
                 if event.timestamp - self.lastEscTimestamp < self.doubleEscInterval {
                     self.lastEscTimestamp = 0
                     self.viewModel.notchClose()
@@ -194,6 +200,14 @@ final class NotchWindowController: NSWindowController {
             let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
             guard flags == .command,
                   let chars = event.charactersIgnoringModifiers else { return event }
+
+            if chars == "," {
+                self.viewModel.toggleSettings()
+                return nil
+            }
+
+            // Tab shortcuts only apply while the terminal pane is showing
+            guard self.viewModel.panelContent == .terminal else { return event }
 
             switch chars {
             case "t":

@@ -35,6 +35,8 @@ struct NotchTermApp: App {
         guard let token = PostHogEnv.projectToken else { return }
         let config = PostHogConfig(apiKey: token, host: PostHogEnv.host)
         config.captureApplicationLifecycleEvents = true
+        // Respect the persisted opt-out (Settings pane) before any events fire.
+        config.optOut = !AnalyticsPreference.isEnabled
         PostHogSDK.shared.setup(config)
     }
 
