@@ -32,12 +32,18 @@ targets:
         product: PostHog
       - package: Sparkle
         product: Sparkle
+    configFiles:
+      Debug: Config/Base.xcconfig
+      Release: Config/Base.xcconfig
     info:
       path: NotchTerm/Info.plist
       properties:
         LSUIElement: true
         NSPrincipalClass: NSApplication
         NSHighResolutionCapable: true
+        # Injected from Config/Secrets.xcconfig (gitignored) at build time; read at
+        # runtime by PostHogEnv. Empty when no secrets file → analytics disabled.
+        POSTHOGProjectToken: $(POSTHOG_PROJECT_TOKEN)
         # Reference build settings so MARKETING_VERSION / CURRENT_PROJECT_VERSION
         # (set in project.yml and overridable via xcodebuild) flow into the bundle.
         # Sparkle reads these from the app's Info.plist to build the appcast.

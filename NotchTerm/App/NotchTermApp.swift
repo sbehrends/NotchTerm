@@ -6,18 +6,24 @@
 import SwiftUI
 import PostHog
 
-enum PostHogEnv: String {
-    case projectToken = "POSTHOG_PROJECT_TOKEN"
-    case host = "POSTHOG_HOST"
+/// PostHog analytics configuration.
+///
+/// The project token is injected at build time from `Config/Secrets.xcconfig`
+/// (gitignored) via the `POSTHOGProjectToken` Info.plist key, so it never lives in
+/// source. A `POSTHOG_PROJECT_TOKEN` environment variable overrides it for local
+/// runs. When no token is present (e.g. a contributor without the secrets file),
+/// `projectToken` is nil and analytics are left disabled.
+enum PostHogEnv {
+    static var projectToken: String? {
+        if let env = ProcessInfo.processInfo.environment["POSTHOG_PROJECT_TOKEN"], !env.isEmpty {
+            return env
+        }
+        let fromPlist = Bundle.main.object(forInfoDictionaryKey: "POSTHOGProjectToken") as? String
+        return fromPlist.flatMap { $0.isEmpty ? nil : $0 }
+    }
 
-    // TODO: Remove if open sourced, or make configurable by user
-    private static let defaults: [String: String] = [
-        "POSTHOG_PROJECT_TOKEN": "phc_pMBvNhDDypvkf2rSR2QNnsZrwu2ny3pDhu23cnWHiPHf",
-        "POSTHOG_HOST": "https://us.i.posthog.com"
-    ]
-
-    var value: String {
-        ProcessInfo.processInfo.environment[rawValue] ?? Self.defaults[rawValue]!
+    static var host: String {
+        ProcessInfo.processInfo.environment["POSTHOG_HOST"] ?? "https://us.i.posthog.com"
     }
 }
 
@@ -26,7 +32,8 @@ struct NotchTermApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     init() {
-        let config = PostHogConfig(apiKey: PostHogEnv.projectToken.value, host: PostHogEnv.host.value)
+        guard let token = PostHogEnv.projectToken else { return }
+        let config = PostHogConfig(apiKey: token, host: PostHogEnv.host)
         config.captureApplicationLifecycleEvents = true
         // Respect the persisted opt-out (Settings pane) before any events fire.
         config.optOut = !AnalyticsPreference.isEnabled

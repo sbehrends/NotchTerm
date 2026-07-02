@@ -1,10 +1,10 @@
-# CLAUDE.md — NotchTerminal
+# CLAUDE.md — NotchTerm
 
 ## Project
 
 macOS notch terminal emulator. A borderless `NSPanel` lives at the top of the screen; the notch area acts as a pill that expands into a multi-tab shell panel. Deep Claude Code hook integration animates the pill when Claude is processing.
 
-**Working directory:** `/Users/sergiobehrends/Documents/Others/Claudeland/NotchTerminal/`
+**Working directory:** `/Users/sergiobehrends/Documents/Others/Claudeland/NotchTerm/`
 **Language:** Swift 6.0 · SwiftUI + AppKit · macOS 15.0+
 **Build tool:** xcodegen → `xcodegen generate` then `xcodebuild`
 
@@ -14,8 +14,8 @@ macOS notch terminal emulator. A borderless `NSPanel` lives at the top of the sc
 
 ```bash
 xcodegen generate                    # regenerate .xcodeproj from project.yml
-xcodebuild -project NotchTerminal.xcodeproj \
-           -scheme NotchTerminal \
+xcodebuild -project NotchTerm.xcodeproj \
+           -scheme NotchTerm \
            -destination 'platform=macOS' build
 ```
 
@@ -37,7 +37,7 @@ Always run `xcodegen generate` after adding, removing, or moving source files. T
 | UI — window | `UI/Window/` | `NSPanel`, `NSWindowController`, `PassThroughHostingView` |
 | UI — views | `UI/Views/` | `NotchContainerView`, `TerminalTabsView`, `TerminalEmulatorView` |
 | UI — components | `UI/Components/` | `NotchShape`, `ClaudeCrabIcon`, `ProcessingSpinner` |
-| Resources | `Resources/` | `notch-terminal-hook.py` (bundled, copied to `~/.claude/hooks/` on launch) |
+| Resources | `Resources/` | `notchterm-hook.py` (bundled, copied to `~/.claude/hooks/` on launch) |
 
 ---
 
@@ -72,7 +72,7 @@ The `NotchShape` with `openedTopRadius = 19` has straight sides at `x = 19` from
 
 ### Hook system
 
-On launch `HookInstaller.installIfNeeded()` copies the bundled Python script and patches `~/.claude/settings.json`. The script sends JSON to `/tmp/notch-terminal.sock`. `HookSocketServer` listens on a GCD queue; `ClaudeHookMonitor` maps `status` → `isActive: Bool` on `@MainActor`.
+On launch `HookInstaller.installIfNeeded()` copies the bundled Python script and patches `~/.claude/settings.json`. The script sends JSON to `/tmp/notchterm.sock`. `HookSocketServer` listens on a GCD queue; `ClaudeHookMonitor` maps `status` → `isActive: Bool` on `@MainActor`.
 
 ---
 
@@ -90,7 +90,7 @@ On launch `HookInstaller.installIfNeeded()` copies the bundled Python script and
 
 ### Add a new hook event status
 
-1. Add the mapping in `Resources/notch-terminal-hook.py`
+1. Add the mapping in `Resources/notchterm-hook.py`
 2. Add the mapping in `Services/Hooks/HookEvent.swift` → `isProcessing`
 3. Re-run `xcodegen generate` (Python resource doesn't require this, but Swift changes do)
 

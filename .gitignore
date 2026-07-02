@@ -4,6 +4,9 @@ DerivedData/
 
 # Release artifacts — zips live on GitHub Releases; only root appcast.xml is committed
 releases/
+
+# Local secrets (PostHog token, etc.) — copy Config/Secrets.example.xcconfig
+Config/Secrets.xcconfig
 *.xcodeproj/xcuserdata/
 *.xcworkspace/xcuserdata/
 *.pbxuser

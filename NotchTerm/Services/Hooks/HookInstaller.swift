@@ -82,7 +82,14 @@ struct HookInstaller {
         json["hooks"] = hooks
 
         if let data = try? JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted, .sortedKeys]) {
-            try? data.write(to: settingsURL)
+            // One-time backup before we first touch the user's settings.
+            let backupURL = settingsURL.appendingPathExtension("notchterm-backup")
+            let fm = FileManager.default
+            if fm.fileExists(atPath: settingsURL.path), !fm.fileExists(atPath: backupURL.path) {
+                try? fm.copyItem(at: settingsURL, to: backupURL)
+            }
+            // Atomic so a crash mid-write can't corrupt settings.json.
+            try? data.write(to: settingsURL, options: .atomic)
         }
     }
 

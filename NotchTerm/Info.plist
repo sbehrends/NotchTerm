@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>POSTHOGProjectToken</key>
+	<string>$(POSTHOG_PROJECT_TOKEN)</string>
 	<key>SUAllowsAutomaticUpdates</key>
 	<true/>
 	<key>SUEnableAutomaticChecks</key>

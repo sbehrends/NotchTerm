@@ -1,8 +1,8 @@
-# Product Requirements Document — NotchTerminal
+# Product Requirements Document — NotchTerm
 
 ## Overview
 
-NotchTerminal is a macOS utility that repurposes the MacBook Pro hardware notch as a persistent terminal launcher. It turns dead screen real estate into a zero-friction shell access point with deep Claude Code integration.
+NotchTerm is a macOS utility that repurposes the MacBook Pro hardware notch as a persistent terminal launcher. It turns dead screen real estate into a zero-friction shell access point with deep Claude Code integration.
 
 ---
 
@@ -79,12 +79,12 @@ Power users who run Claude Code and terminal-heavy workflows context-switch cons
 
 ### Claude Code Integration
 
-- **FR-19** On first launch the app shall copy `notch-terminal-hook.py` to `~/.claude/hooks/` and register it in `~/.claude/settings.json`
+- **FR-19** On first launch the app shall copy `notchterm-hook.py` to `~/.claude/hooks/` and register it in `~/.claude/settings.json`
 - **FR-20** Hook events `processing` / `running_tool` / `compacting` shall set `isActive = true` in the monitor
 - **FR-21** Hook events `waiting_for_input` / `ended` shall set `isActive = false`
 - **FR-22** When `isActive = true` the pill shall expand 40pt laterally to show the crab + spinner
 - **FR-23** The expansion shall use a spring with `response: 0.38s, dampingFraction: 0.72`
-- **FR-24** The hook script shall communicate via Unix domain socket at `/tmp/notch-terminal.sock`
+- **FR-24** The hook script shall communicate via Unix domain socket at `/tmp/notchterm.sock`
 - **FR-25** The hook script shall be fire-and-forget (no permission handling)
 
 ### Display Handling
@@ -120,7 +120,7 @@ AppDelegate
                           │           ├── TabChrome (tab bar)
                           │           └── TerminalEmulatorView (SwiftTerm)
                           └── ClaudeHookMonitor
-                                └── HookSocketServer (/tmp/notch-terminal.sock)
+                                └── HookSocketServer (/tmp/notchterm.sock)
 ```
 
 ---
