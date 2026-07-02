@@ -15,13 +15,17 @@ final class NotchWindowController: NSWindowController {
     private var cancellables = Set<AnyCancellable>()
     private nonisolated(unsafe) var keyMonitor: Any?
 
+    /// Timestamp of the last plain ESC press, for double-ESC-to-close.
+    private var lastEscTimestamp: TimeInterval = 0
+    private let doubleEscInterval: TimeInterval = 0.35
+
     /// Normal level: floats above the menu bar so the pill is always visible.
     private let elevatedLevel: NSWindow.Level = .mainMenu + 3
     /// Yielded level: drops below system dialogs (TCC / folder-access prompts)
     /// so they're not covered by an expanded panel.
     private let loweredLevel: NSWindow.Level = .normal
 
-    init(screen: NSScreen) {
+    init(screen: NSScreen, sessionManager: TerminalSessionManager, runBootAnimation: Bool) {
         let screenFrame = screen.frame
         let notchSize = screen.notchSize
 
@@ -47,7 +51,7 @@ final class NotchWindowController: NSWindowController {
             hasPhysicalNotch: screen.hasPhysicalNotch
         )
 
-        self.sessionManager = TerminalSessionManager()
+        self.sessionManager = sessionManager
 
         let notchWindow = NotchPanel(
             contentRect: windowFrame,
@@ -75,8 +79,12 @@ final class NotchWindowController: NSWindowController {
                 switch status {
                 case .opened:
                     notchWindow.ignoresMouseEvents = false
-                    NSApp.activate(ignoringOtherApps: false)
-                    notchWindow.makeKey()
+                    // The boot animation must not yank key status from
+                    // whatever the user is doing (e.g. as a login item).
+                    if self.viewModel.openReason != .boot {
+                        NSApp.activate(ignoringOtherApps: false)
+                        notchWindow.makeKey()
+                    }
                 case .closed:
                     notchWindow.ignoresMouseEvents = true
                 }
@@ -87,8 +95,10 @@ final class NotchWindowController: NSWindowController {
         setupKeyboardShortcuts()
         setupSystemDialogYielding()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            self?.viewModel.performBootAnimation()
+        if runBootAnimation {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+                self?.viewModel.performBootAnimation()
+            }
         }
     }
 
@@ -164,10 +174,18 @@ final class NotchWindowController: NSWindowController {
         keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
             guard let self else { return event }
 
-            // ESC always closes (even when closed it's a no-op)
+            // ESC: plain ESC must reach the shell (vim, less, Claude Code's
+            // ESC-to-interrupt). Close the panel on double-ESC — the first
+            // press still goes through to the PTY.
             if event.keyCode == 53 {
-                self.viewModel.notchClose()
-                return nil
+                guard self.viewModel.status == .opened else { return event }
+                if event.timestamp - self.lastEscTimestamp < self.doubleEscInterval {
+                    self.lastEscTimestamp = 0
+                    self.viewModel.notchClose()
+                    return nil
+                }
+                self.lastEscTimestamp = event.timestamp
+                return event
             }
 
             // All other shortcuts only active when panel is open

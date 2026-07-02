@@ -44,7 +44,9 @@ class NotchPanel: NSPanel {
 
         allowsToolTipsWhenApplicationIsInactive = true
         ignoresMouseEvents = true
-        isReleasedWhenClosed = true
+        // ARC (WindowManager/controller) owns the window; letting AppKit
+        // release it on close() double-releases during window rebuilds.
+        isReleasedWhenClosed = false
         acceptsMouseMovedEvents = false
     }
 
