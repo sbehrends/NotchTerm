@@ -3,6 +3,17 @@
     <channel>
         <title>NotchTerm</title>
         <item>
+            <title>0.3</title>
+            <pubDate>Thu, 02 Jul 2026 10:12:41 +0200</pubDate>
+            <sparkle:version>3</sparkle:version>
+            <sparkle:shortVersionString>0.3</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/sbehrends/NotchTerm/releases/download/updates/NotchTerm-0.3.zip" length="3432069" type="application/octet-stream" sparkle:edSignature="gD0Nga3FL3NwE1SJUz88In5YGoqZCiM/cUJ8dSYUV4T8mRkE6H0Flvq0jYYtPquES1q3LmV0sSzp4n3THwPiCA=="/>
+            <sparkle:deltas>
+                <enclosure url="https://github.com/sbehrends/NotchTerm/releases/download/updates/NotchTerm3-2.delta" sparkle:deltaFrom="2" length="373406" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="977616" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="o7HY8nyl+/OYAXVTRHMauv6LIZw5KsdBY4rBi4nibD1uODBWz28SkGLpAeY6GMDZn94x8ewFXRS7EHore11CCA=="/>
+            </sparkle:deltas>
+        </item>
+        <item>
             <title>0.2</title>
             <pubDate>Thu, 02 Jul 2026 00:19:48 +0200</pubDate>
             <sparkle:version>2</sparkle:version>
