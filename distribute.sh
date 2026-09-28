@@ -12,13 +12,12 @@
 #   • EdDSA key pair generated (private key in Keychain, public key in project.yml).
 #   • Sparkle keys present in Info.plist (SUFeedURL / SUPublicEDKey / SU* cadence).
 #
-# BEFORE FIRST RELEASE — edit the two placeholders:
-#   1. REPO_OWNER below.
-#   2. SUFeedURL in project.yml (OWNER → your GitHub username), then `xcodegen generate`.
+# Sparkle decides "is this newer?" by comparing CFBundleVersion (the build number,
+# CURRENT_PROJECT_VERSION), NOT the marketing version. Every release must raise it.
 #
 # Usage:
-#   ./distribute.sh                 # build using MARKETING_VERSION from project.yml
-#   ./distribute.sh --version 1.1   # build + set that version
+#   ./distribute.sh                            # versions from project.yml
+#   ./distribute.sh --version 0.4 --build 4    # override both
 #
 set -euo pipefail
 
@@ -31,7 +30,7 @@ BUILD_DIR="build"
 ARCHIVE_PATH="${BUILD_DIR}/${APP_NAME}.xcarchive"
 RELEASES_DIR="releases"          # zips + appcast.xml accumulate here (commit these)
 
-# GitHub repo the appcast download links point at.  ▸ EDIT REPO_OWNER.
+# GitHub repo the appcast download links point at.
 REPO_OWNER="sbehrends"
 REPO_NAME="NotchTerm"
 # All release zips are uploaded as assets of a single, stable GitHub release tag
@@ -42,9 +41,11 @@ DOWNLOAD_URL_PREFIX="https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/down
 # ── Version ──────────────────────────────────────────────────────────────────
 
 VERSION=""
+BUILD=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --version) VERSION="$2"; shift 2 ;;
+        --build) BUILD="$2"; shift 2 ;;
         *) echo "Unknown argument: $1"; exit 1 ;;
     esac
 done
@@ -55,13 +56,29 @@ if [[ -z "$VERSION" ]]; then
     VERSION=$(grep -E '^[[:space:]]*MARKETING_VERSION:[[:space:]]*"' project.yml | head -1 | awk -F'"' '{print $2}')
 fi
 
-if [[ -z "$VERSION" ]]; then
-    echo "✗ Could not determine version from project.yml (MARKETING_VERSION)."
+if [[ -z "$BUILD" ]]; then
+    BUILD=$(grep -E '^[[:space:]]*CURRENT_PROJECT_VERSION:[[:space:]]*"' project.yml | head -1 | awk -F'"' '{print $2}')
+fi
+
+if [[ -z "$VERSION" || -z "$BUILD" ]]; then
+    echo "✗ Could not determine version/build from project.yml (MARKETING_VERSION / CURRENT_PROJECT_VERSION)."
     exit 1
 fi
 
+# Refuse to ship a build number that is not above the newest one in the feed:
+# existing installs would silently never see it.
+if [[ -f appcast.xml ]]; then
+    LATEST_BUILD=$(grep -oE '<sparkle:version>[0-9]+</sparkle:version>' appcast.xml \
+        | grep -oE '[0-9]+' | sort -n | tail -1)
+    if [[ -n "$LATEST_BUILD" && "$BUILD" -le "$LATEST_BUILD" ]]; then
+        echo "✗ Build number ${BUILD} is not greater than the latest in appcast.xml (${LATEST_BUILD})."
+        echo "  Bump CURRENT_PROJECT_VERSION in project.yml (or pass --build)."
+        exit 1
+    fi
+fi
+
 echo "┌──────────────────────────────────────────┐"
-echo "│  ${APP_NAME}  v${VERSION}  (ad-hoc + Sparkle)"
+echo "│  ${APP_NAME}  v${VERSION} (build ${BUILD})  (ad-hoc + Sparkle)"
 echo "└──────────────────────────────────────────┘"
 
 # ── Locate Sparkle tools (resolved SPM artifacts) ───────────────────────────────
@@ -94,6 +111,7 @@ xcodebuild archive \
     -destination "generic/platform=macOS" \
     -skipPackagePluginValidation \
     MARKETING_VERSION="${VERSION}" \
+    CURRENT_PROJECT_VERSION="${BUILD}" \
     CODE_SIGN_STYLE=Manual \
     CODE_SIGN_IDENTITY="-" \
     | grep -E "^(Archive|error:|\*\* |Build succeeded)" || true

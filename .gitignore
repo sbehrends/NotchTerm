@@ -24,3 +24,6 @@ Packages/
 *.swp
 *~
 .env
+
+.claude/worktrees/
+.claude/settings.local.json

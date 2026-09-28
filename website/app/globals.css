@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Studio Cream & Carbon — design tokens (from DESIGN.md)
+ * Ported to Tailwind v4's CSS-first @theme so every token is a real
+ * utility (bg-surface, text-on-surface-variant, py-section-gap, …).
+ * ------------------------------------------------------------------ */
+@theme {
+  /* Type families — wired to the next/font CSS variables set on <html>. */
+  --font-display: var(--font-hanken), "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Surfaces — warm, paper-like tonal ladder. */
+  --color-background: #fef9f1;
+  --color-surface: #fef9f1;
+  --color-surface-dim: #ded9d2;
+  --color-surface-bright: #fef9f1;
+  --color-surface-lowest: #ffffff;
+  --color-surface-low: #f8f3eb;
+  --color-surface-container: #f2ede5;
+  --color-surface-high: #ede7e0;
+  --color-surface-highest: #e7e2da;
+
+  /* Ink / content. */
+  --color-on-surface: #1d1b17;
+  --color-on-surface-variant: #444748;
+  --color-inverse-surface: #32302b;
+  --color-inverse-on-surface: #f5f0e8;
+
+  /* Lines. */
+  --color-outline: #747878;
+  --color-outline-variant: #c4c7c7;
+
+  /* Carbon primary — the "ink" to the cream "paper". */
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #1c1b1b;
+
+  /* Orange accent — used sparingly for highlights & CTAs. */
+  --color-accent: #fe6b00;
+  --color-accent-dim: #ffb693;
+  --color-on-accent: #ffffff;
+  --color-secondary: #a04100;
+  --color-on-secondary-container: #572000;
+
+  --color-error: #ba1a1a;
+
+  /* Fluid display type — scales smoothly from mobile → desktop, no jump. */
+  --text-display-lg: clamp(3.25rem, 2.2rem + 5.2vw, 5.25rem); /* 52 → 84px */
+  --text-display-lg--line-height: 0.95;
+  --text-display-lg--letter-spacing: -0.04em;
+  --text-display-lg--font-weight: 800;
+
+  --text-headline-lg: clamp(2.25rem, 1.6rem + 3.2vw, 3.5rem); /* 36 → 56px */
+  --text-headline-lg--line-height: 1.02;
+  --text-headline-lg--letter-spacing: -0.03em;
+  --text-headline-lg--font-weight: 700;
+
+  --text-headline-md: 1.5rem;
+  --text-headline-md--line-height: 2rem;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-md--font-weight: 600;
+
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.75rem;
+
+  --text-body-md: 1rem;
+  --text-body-md--line-height: 1.5rem;
+
+  --text-label-sm: 0.75rem;
+  --text-label-sm--line-height: 1rem;
+  --text-label-sm--letter-spacing: 0.06em;
+  --text-label-sm--font-weight: 600;
+
+  /* Spacing rhythm — 8px base unit; generous section pacing. */
+  --spacing-base: 8px;
+  --spacing-gutter: 24px;
+  --spacing-content-gap: 48px;
+  --spacing-section-gap: clamp(72px, 8vw, 120px);
+  --spacing-margin-mobile: 20px;
+  --spacing-margin-desktop: 64px;
+
+  /* Radii — hardware-inspired soft curves. */
+  --radius-sm: 0.25rem;
+  --radius-DEFAULT: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Motion. */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Base element defaults. */
+@layer base {
+  :root {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-on-surface);
+    font-family: var(--font-sans);
+  }
+
+  /* Consistent, visible keyboard focus without hurting mouse users. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Component-scoped keyframes (used by the interactive hero).
+ * ------------------------------------------------------------------ */
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes notch-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}

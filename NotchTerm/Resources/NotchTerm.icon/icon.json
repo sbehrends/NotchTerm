@@ -1,0 +1,74 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "display-p3:0.00000,0.00000,0.00000,1.00000",
+      "display-p3:0.26072,0.26349,0.25794,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "image-name" : "Chevron (Stroke).svg",
+          "name" : "Chevron (Stroke)",
+          "position" : {
+            "scale" : 4,
+            "translation-in-points" : [
+              -136.40900000000005,
+              1.9139999999999873
+            ]
+          }
+        },
+        {
+          "image-name" : "Underscore.svg",
+          "name" : "Underscore",
+          "position" : {
+            "scale" : 1.34,
+            "translation-in-points" : [
+              123.20899999999995,
+              116.62599999999998
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.3
+      }
+    },
+    {
+      "layers" : [
+        {
+          "image-name" : "Rim.svg",
+          "name" : "Rim",
+          "position" : {
+            "scale" : 1.09,
+            "translation-in-points" : [
+              0,
+              15.398975000000064
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.3
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

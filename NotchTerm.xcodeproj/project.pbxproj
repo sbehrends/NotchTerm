@@ -33,8 +33,10 @@
 		B0AFEB340EA4C5F2BBC17DF1 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = E18D4304EF3470C6AFB04155 /* SwiftTerm */; };
 		B533E5EB60733C54E4D899D7 /* TerminalTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9397E2497339AC82D2C764B /* TerminalTabsView.swift */; };
 		C019F427C821615323F91D26 /* NotchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B295361E45F8099B538A565 /* NotchViewModel.swift */; };
+		CA0AC8E228831FC8217E6BA6 /* NotchTerm.icon in Resources */ = {isa = PBXBuildFile; fileRef = E8F2A9858A5DD49E42218EC1 /* NotchTerm.icon */; };
 		D45B08316081F0E06A102938 /* HookSocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48038ADE3D65F5BA6A68016D /* HookSocketServer.swift */; };
 		D5E0906DC5BDA22DB900796C /* NotchTermApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FFA3FBFD726A14A288ADFC /* NotchTermApp.swift */; };
+		DD9FA69331D5A49C1C48042D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D091ABC425AB41E6E787DE53 /* Assets.xcassets */; };
 		E5642B9BC97F09D3886C74DB /* ClaudeActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6E58C300BA6D3642CC1349 /* ClaudeActivityMonitor.swift */; };
 		F78720C0605206C1B2F75302 /* Ext+NSScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A196FCEA057F2335D31B35 /* Ext+NSScreen.swift */; };
 /* End PBXBuildFile section */
@@ -67,8 +69,10 @@
 		B196C7C832FA72A7FA63F5EB /* NotchTerm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotchTerm.entitlements; sourceTree = "<group>"; };
 		B6FFA3FBFD726A14A288ADFC /* NotchTermApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchTermApp.swift; sourceTree = "<group>"; };
 		BAA40C72EF7F1F7257DDFBCF /* TerminalSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSession.swift; sourceTree = "<group>"; };
+		D091ABC425AB41E6E787DE53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DEA040F92CFA095003843D62 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		DEAE441BA9A1BD004F0CFD8D /* ClaudeHookMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeHookMonitor.swift; sourceTree = "<group>"; };
+		E8F2A9858A5DD49E42218EC1 /* NotchTerm.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = NotchTerm.icon; sourceTree = "<group>"; };
 		F1D1118B5679F8E0FC970D01 /* TerminalSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSessionManager.swift; sourceTree = "<group>"; };
 		F9397E2497339AC82D2C764B /* TerminalTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalTabsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -138,7 +142,9 @@
 		6FA49C3801B0D1E4554E63BE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D091ABC425AB41E6E787DE53 /* Assets.xcassets */,
 				38758C10E5BE9A5E36759670 /* notchterm-hook.py */,
+				E8F2A9858A5DD49E42218EC1 /* NotchTerm.icon */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -309,6 +315,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD9FA69331D5A49C1C48042D /* Assets.xcassets in Resources */,
+				CA0AC8E228831FC8217E6BA6 /* NotchTerm.icon in Resources */,
 				7BE2691503658782DD1EB5C5 /* notchterm-hook.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,12 +364,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DEA040F92CFA095003843D62 /* Base.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = NotchTerm;
 				CODE_SIGN_ENTITLEMENTS = NotchTerm/NotchTerm.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				ENABLE_APP_SANDBOX = NO;
 				INFOPLIST_FILE = NotchTerm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -369,7 +377,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sergiobehrends.NotchTerm;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;
@@ -443,11 +451,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DEA040F92CFA095003843D62 /* Base.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = NotchTerm;
 				CODE_SIGN_ENTITLEMENTS = NotchTerm/NotchTerm.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				ENABLE_APP_SANDBOX = NO;
 				INFOPLIST_FILE = NotchTerm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -455,7 +463,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sergiobehrends.NotchTerm;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;

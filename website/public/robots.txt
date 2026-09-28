@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sbehrends.github.io/NotchTerm/sitemap.xml

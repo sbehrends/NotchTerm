@@ -4,9 +4,20 @@
 
 macOS notch terminal emulator. A borderless `NSPanel` lives at the top of the screen; the notch area acts as a pill that expands into a multi-tab shell panel. Deep Claude Code hook integration animates the pill when Claude is processing.
 
-**Working directory:** `/Users/sergiobehrends/Documents/Others/Claudeland/NotchTerm/`
+**Working directory:** `/Users/sergiobehrends/Documents/Labs/NotchTerminal/`
 **Language:** Swift 6.0 · SwiftUI + AppKit · macOS 15.0+
 **Build tool:** xcodegen → `xcodegen generate` then `xcodebuild`
+
+This repo holds two independent projects:
+
+| Path | What | Toolchain |
+|---|---|---|
+| repo root (`NotchTerm/`, `Config/`, `project.yml`) | the macOS app | xcodegen + xcodebuild |
+| `website/` | the marketing site, `sbehrends.github.io/NotchTerm` (GitHub Pages) | Next.js 16 static export (`npm run build` → `website/out`) |
+
+They share nothing but the brand assets and the release version. `project.yml`
+only sources `NotchTerm/`, so `website/` is never pulled into the Xcode target.
+When working on one, do not regenerate or rebuild the other.
 
 ---
 

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lock Screen Clock</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #fcefe3; /* Matches the outer canvas background */
+}
+
+/* Main Container */
+.lock-screen-container {
+    position: relative;
+    width: 100%;
+    max-width: 960px; /* Scaling base width to match screenshot proportions */
+    aspect-ratio: 16 / 7.5; 
+    border-radius: 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 24px;
+    
+    /* BACKGROUND: Replace this color with your JPG url */
+    background-color: #3b1e6d; 
+    /* background: url('your-image.jpg') no-repeat center center / cover; */
+    
+    overflow: hidden;
+}
+
+/* Dynamic Island / Notch */
+.notch {
+    background-color: #000000;
+    width: 160px;
+    height: 38px;
+    border-radius: 19px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.lock-icon {
+    font-size: 14px;
+    opacity: 0.9;
+    /* Adjust color or use a precise SVG icon if preferred */
+    filter: invert(1); 
+}
+
+/* Typography Header */
+.lock-screen-header {
+    text-align: center;
+    color: #e2c0ff; /* Soft pastel purple/pink color from image */
+}
+
+.date {
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    margin-bottom: 2px;
+    opacity: 0.9;
+}
+
+.time {
+    font-size: 5.5rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+    </style>
+</head>
+<body>
+
+    <div class="lock-screen-container">
+        <div class="notch">
+            <span class="lock-icon">🔒</span>
+        </div>
+
+        <header class="lock-screen-header">
+            <p class="date">Wed, 1 Jul</p>
+            <h1 class="time">21:18</h1>
+        </header>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Hanken+Grotesk:wght@600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{try{
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-surface": "#1d1b17",
+                "error": "#ba1a1a",
+                "surface-container-highest": "#e7e2da",
+                "primary": "#000000",
+                "primary-container": "#1c1b1b",
+                "on-tertiary": "#ffffff",
+                "tertiary-fixed": "#e7e2d9",
+                "error-container": "#ffdad6",
+                "surface-dim": "#ded9d2",
+                "on-secondary-fixed-variant": "#7a3000",
+                "surface-container": "#f2ede5",
+                "on-tertiary-fixed-variant": "#494740",
+                "on-primary-fixed-variant": "#474746",
+                "on-tertiary-container": "#87847c",
+                "on-primary-fixed": "#1c1b1b",
+                "on-background": "#1d1b17",
+                "on-tertiary-fixed": "#1d1c16",
+                "surface-variant": "#e7e2da",
+                "on-secondary-fixed": "#351000",
+                "on-secondary-container": "#572000",
+                "tertiary-container": "#1d1c16",
+                "on-surface-variant": "#444748",
+                "on-error-container": "#93000a",
+                "surface-container-high": "#ede7e0",
+                "surface-container-low": "#f8f3eb",
+                "on-error": "#ffffff",
+                "outline-variant": "#c4c7c7",
+                "surface-tint": "#5f5e5e",
+                "tertiary-fixed-dim": "#cac6be",
+                "inverse-surface": "#32302b",
+                "background": "#fef9f1",
+                "inverse-primary": "#c8c6c5",
+                "surface-bright": "#fef9f1",
+                "inverse-on-surface": "#f5f0e8",
+                "on-primary": "#ffffff",
+                "surface": "#fef9f1",
+                "secondary": "#a04100",
+                "secondary-container": "#fe6b00",
+                "on-primary-container": "#858383",
+                "secondary-fixed-dim": "#ffb693",
+                "surface-container-lowest": "#ffffff",
+                "on-secondary": "#ffffff",
+                "secondary-fixed": "#ffdbcc",
+                "primary-fixed-dim": "#c8c6c5",
+                "outline": "#747878",
+                "tertiary": "#000000",
+                "primary-fixed": "#e5e2e1"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "base": "8px",
+                "margin-mobile": "20px",
+                "margin-desktop": "64px",
+                "section-gap": "120px",
+                "gutter": "24px",
+                "content-gap": "48px"
+        },
+        "fontFamily": {
+                "body-md": ["Inter"],
+                "label-sm": ["Geist"],
+                "headline-md": ["Hanken Grotesk"],
+                "headline-lg-mobile": ["Hanken Grotesk"],
+                "headline-lg": ["Hanken Grotesk"],
+                "display-lg": ["Hanken Grotesk"],
+                "body-lg": ["Inter"]
+        },
+        "fontSize": {
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "headline-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+        }
+      },
+    },
+  }
+}catch(_e){}}catch(_e){}</script></head><body class="font-body-md text-on-surface bg-background">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 py-base bg-background/80 backdrop-blur-md">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<div class="flex items-center gap-2">
+    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-xl">terminal</span>
+    </div>
+    <span class="font-headline-md text-xl font-bold text-on-surface">NotchTerm</span>
+    <span class="text-[10px] font-bold bg-primary/5 px-1.5 py-0.5 rounded text-on-surface/40">v1.2</span>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+    
+</div>
+<button class="bg-surface-container text-on-surface text-label-sm font-bold py-2 px-4 rounded-full flex items-center gap-2 border border-outline/10 hover:bg-surface-container-high transition-all">
+    <div class="w-3.5 h-3.5 bg-on-surface apple-logo"></div>
+    Download for Mac
+</button>
+</div>
+</nav>
+
+<!-- Hero Section (Light Theme) -->
+<section class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop relative overflow-hidden bg-background">
+<div class="max-w-7xl mx-auto flex flex-col items-center text-center">
+    <h1 class="font-display-lg text-[56px] md:text-[84px] leading-[0.9] font-extrabold text-on-surface tracking-[-0.05em] mb-10 max-w-4xl">
+        The terminal <br>that lives in <span class="relative inline-block">your <span class="bg-black text-white px-4 py-1 rounded-xl inline-block">notch.</span></span>
+    </h1>
+    
+    <div class="flex flex-wrap justify-center gap-4 mb-20">
+        <button class="bg-primary text-white py-3 px-8 rounded-full font-bold text-body-md flex items-center gap-3 hover:scale-[1.02] transition-transform shadow-xl shadow-primary/10">
+            <div class="w-4 h-4 bg-white apple-logo"></div>
+            Download for Mac
+        </button>
+        <button class="bg-surface-container-high text-on-surface py-3 px-8 rounded-full font-bold text-body-md flex items-center justify-center gap-2.5 hover:bg-surface-container-highest hover:scale-[1.02] transition-all border border-outline/10 shadow-sm">
+            <span class="material-symbols-outlined text-[20px] leading-none">play_circle</span>
+            <span class="">View Demo</span>
+        </button>
+    </div>
+
+    <!-- Notch Term Hero Interactive -->
+</div>
+</section>
+
+<!-- Dark Theme Wrapper -->
+<div class="bg-black text-white">
+    <!-- Features Grid (Dark Theme) -->
+    <section class="py-section-gap">
+    <div class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter text-center">
+            <!-- Feature 1 -->
+            <div class="flex flex-col items-center p-base">
+                <div class="mb-6">
+                    <span class="material-symbols-outlined text-secondary-container text-[40px] font-light">visibility</span>
+                </div>
+                <h3 class="font-headline-md text-xl mb-3 text-secondary">Always Available</h3>
+                <p class="text-white/60 text-body-md leading-relaxed">Toggle the terminal with a simple top-edge gesture or hover. It stays tucked away until the exact moment you need it.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="flex flex-col items-center p-base">
+                <div class="mb-6 text-secondary">
+                    <span class="material-symbols-outlined text-secondary-container text-[40px] font-light">neurology</span>
+                </div>
+                <h3 class="font-headline-md text-xl mb-3 text-secondary">Claude Integration</h3>
+                <p class="text-white/60 text-body-md leading-relaxed">Native, low-latency integration with Claude's terminal-based AI. Get coding assistance without switching windows.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="flex flex-col items-center p-base">
+                <div class="mb-6">
+                    <span class="material-symbols-outlined text-secondary-container text-[40px] font-light">bolt</span>
+                </div>
+                <h3 class="font-headline-md text-xl mb-3 text-secondary">System Native</h3>
+                <p class="text-white/60 text-body-md leading-relaxed">Built specifically for Apple Silicon and macOS. Optimized Swift backend with near-zero CPU idle.</p>
+            </div>
+            <!-- Feature 4 -->
+            <div class="flex flex-col items-center p-base">
+                <div class="mb-6">
+                    <span class="material-symbols-outlined text-secondary-container text-[40px] font-light">keyboard</span>
+                </div>
+                <h3 class="font-headline-md text-xl mb-3 text-secondary">Zero Friction</h3>
+                <p class="text-white/60 text-body-md leading-relaxed">No window management. No CMD-Tab cycles. Just pure flow state in your existing screen real estate.</p>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <!-- Final CTA (Dark Theme) -->
+    <section class="py-section-gap px-margin-mobile md:px-margin-desktop">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="font-display-lg text-[48px] md:text-[72px] leading-[0.9] tracking-[-0.04em] mb-12 text-white">Ready to reclaim <br>your screen?</h2>
+        <div class="flex flex-col items-center gap-8">
+            <button class="bg-secondary-container text-white py-5 px-12 rounded-full font-bold text-xl flex items-center gap-4 hover:scale-[1.03] transition-transform shadow-2xl shadow-secondary/20">
+                <div class="w-6 h-6 bg-white apple-logo"></div>
+                Download for macOS
+            </button>
+            <div class="flex items-center gap-2 text-white/40 font-mono text-sm">
+                <span class="material-symbols-outlined text-[18px]">verified</span>
+                Version 1.2.4 — Universal Binary
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <!-- Footer (Dark Theme) -->
+    <footer class="py-20 border-t border-white/10 bg-black">
+    <div class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-12">
+        <div class="flex flex-col items-center md:items-start gap-2">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-6 h-6 bg-white rounded flex items-center justify-center">
+                    <span class="material-symbols-outlined text-black text-xs">terminal</span>
+                </div>
+                <span class="font-bold text-white">NotchTerm</span>
+            </div>
+            <p class="text-white/40 text-sm">Made with love for builders</p>
+        </div>
+        <div class="flex gap-10">
+            <a class="text-white/60 hover:text-secondary transition-colors text-sm font-medium" href="#">Changelog</a>
+            <a class="text-white/60 hover:text-secondary transition-colors text-sm font-medium" href="#">Privacy</a>
+            <a class="text-white/60 hover:text-secondary transition-colors text-sm font-medium" href="#">Support</a>
+            <a class="text-white/60 hover:text-secondary transition-colors text-sm font-medium" href="#">GitHub</a>
+        </div>
+    </div>
+    </footer>
+</div>
+
+<script class="">
+    const heroSection = document.querySelector('section');
+    const terminal = document.getElementById('hero-terminal');
+    
+    // Auto-peek logic for initial engagement
+    let interactionStarted = false;
+    setTimeout(() => {
+        if(!interactionStarted) {
+            terminal.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                if(!interactionStarted) {</script></body></html>
