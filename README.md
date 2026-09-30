@@ -2,6 +2,8 @@
 
 A macOS terminal emulator that lives in the MacBook Pro notch. Click or hover to expand a full multi-tab shell directly from the top of your screen — no Dock icon, no menu bar clutter.
 
+![NotchTerm screenshot](website/public/screenshot.png)
+
 ## Features
 
 - **Notch-native UI** — the pill sits flush with the hardware notch; the expanded panel drops below it using the same `NotchShape` corner curves
